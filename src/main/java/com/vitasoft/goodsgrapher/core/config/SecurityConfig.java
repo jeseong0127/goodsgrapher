@@ -1,5 +1,9 @@
 package com.vitasoft.goodsgrapher.core.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vitasoft.goodsgrapher.core.security.JwtAuthenticationFilter;
+import com.vitasoft.goodsgrapher.core.security.JwtTokenProvider;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,12 +13,16 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final JwtTokenProvider jwtTokenProvider;
+
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -26,9 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
-                .antMatchers("/api/auth/oauth", "/api/auth/app-version").permitAll()
                 .antMatchers("/api/**").permitAll()
-                .anyRequest().hasRole("USER");
+                .anyRequest().hasRole("ROLE001")
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, objectMapper), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

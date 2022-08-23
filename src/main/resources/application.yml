@@ -18,3 +18,16 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
+
+app:
+  jwtSecret: ${APP_JWT_SECRET}
+  jwtExpirationMs: ${APP_JWT_EXPIRATION_MS}
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace
