@@ -1,5 +1,6 @@
 package com.vitasoft.goodsgrapher.core.security;
 
+import com.vitasoft.goodsgrapher.domain.model.enums.MemberRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,12 +30,13 @@ public class JwtTokenProvider {
     @Value("${app.jwtExpirationMs}")
     private long jwtExpirationMs;
 
-    public String generateJwtToken(int userId) {
+    public String generateJwtToken(String memberId, MemberRole memberRole) {
         SecretKey secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         Date now = new Date();
         Date expireAt = new Date(now.getTime() + jwtExpirationMs);
         return Jwts.builder()
-                .claim("userId", userId)
+                .claim("userId", memberId)
+                .claim("role", memberRole.toString())
                 .setIssuedAt(now)
                 .setExpiration(expireAt)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
