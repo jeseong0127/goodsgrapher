@@ -1,6 +1,6 @@
-package com.vitasoft.goodsgrapher.domain.model.repository;
+package com.vitasoft.goodsgrapher.domain.model.sso.repository;
 
-import com.vitasoft.goodsgrapher.domain.model.entity.Member;
+import com.vitasoft.goodsgrapher.domain.model.sso.entity.Member;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package com.vitasoft.goodsgrapher.domain.model.entity;
+package com.vitasoft.goodsgrapher.domain.model.sso.entity;
 
 import com.vitasoft.goodsgrapher.domain.model.enums.MemberRole;
 
