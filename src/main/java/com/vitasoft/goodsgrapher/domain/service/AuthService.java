@@ -6,8 +6,8 @@ import com.vitasoft.goodsgrapher.application.response.MemberResponse;
 import com.vitasoft.goodsgrapher.application.response.TokenResponse;
 import com.vitasoft.goodsgrapher.core.security.JwtTokenProvider;
 import com.vitasoft.goodsgrapher.domain.exception.member.MemberNotFoundException;
-import com.vitasoft.goodsgrapher.domain.model.entity.Member;
-import com.vitasoft.goodsgrapher.domain.model.repository.MemberRepository;
+import com.vitasoft.goodsgrapher.domain.model.sso.entity.Member;
+import com.vitasoft.goodsgrapher.domain.model.sso.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
