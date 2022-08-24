@@ -7,17 +7,32 @@ server:
       force: true
 
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL57InnoDBDialect
     generate-ddl: false
     hibernate:
       ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: true
+
+kipris:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+sso:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATABASE_URL2}
+    username: ${DATABASE_USERNAME2}
+    password: ${DATABASE_PASSWORD2}
+
 
 app:
   jwtSecret: ${APP_JWT_SECRET}
