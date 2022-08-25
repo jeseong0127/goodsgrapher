@@ -10,5 +10,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class MetadataResponse {
-    private final List<GetMetadataDto> metadataList;
+    private final List<GetMetadataDto> metadata;
 }

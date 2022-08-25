@@ -30,7 +30,9 @@ public class Metadata {
 
     private String applicationNumber;
 
-    private String reserveId;
+    private String reservId;
 
     private String regId;
+
+    private int imgCount;
 }

@@ -16,7 +16,7 @@ public class MetadataService {
     private final MetadataRepository metadataRepository;
 
     public List<GetMetadataDto> getMetadataList() {
-         return metadataRepository.findAll().stream()
+        return metadataRepository.findAllByImgCountLessThan(62).stream()
                 .map(GetMetadataDto::new)
                 .collect(Collectors.toList());
     }
