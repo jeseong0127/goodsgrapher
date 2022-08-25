@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class AuthenticatedUser {
-    private final int userId;
+public class AuthenticatedMember {
+    private final String memberId;
 
-    private final String userRole;
+    private final String memberRole;
 }

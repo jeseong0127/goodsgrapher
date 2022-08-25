@@ -1,13 +1,17 @@
 package com.vitasoft.goodsgrapher.application.controller;
 
 import com.vitasoft.goodsgrapher.application.response.MetadataResponse;
+import com.vitasoft.goodsgrapher.core.security.AuthenticatedMember;
+import com.vitasoft.goodsgrapher.core.security.MemberInfo;
 import com.vitasoft.goodsgrapher.domain.service.MetadataService;
 import io.swagger.annotations.ApiOperation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,4 +30,13 @@ public class MetadataController {
         return new MetadataResponse(metadataService.getMetadataList());
     }
 
+    @ApiOperation("메타데이터 예약하기")
+    @PutMapping("/reserve")
+    @ResponseStatus(HttpStatus.OK)
+    public void reserveMetadata(
+            @MemberInfo AuthenticatedMember member,
+            @RequestParam int metaSeq
+    ) {
+        metadataService.reserveMetadata(member.getMemberId(), metaSeq);
+    }
 }

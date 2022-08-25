@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
     List<Metadata> findAllByImgCountLessThan(int imgCount);
+
+    int countByReserveId(String reserveId);
 }
