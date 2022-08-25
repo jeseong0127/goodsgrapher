@@ -12,4 +12,6 @@ public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
     List<Metadata> findAllByImgCountLessThan(int imgCount);
 
     int countByReserveId(String reserveId);
+
+    List<Metadata> findAllByReserveId(String memberId);
 }
