@@ -36,4 +36,11 @@ public class MetadataService {
         metadata.setReserveDate(LocalDateTime.now());
         metadataRepository.save(metadata);
     }
+
+    public void cancelReserveMetadata(int metaSeq) {
+        Metadata metadata = metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq));
+        metadata.setReserveId("N/A");
+        metadata.setReserveDate(null);
+        metadataRepository.save(metadata);
+    }
 }
