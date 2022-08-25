@@ -39,4 +39,13 @@ public class MetadataController {
     ) {
         metadataService.reserveMetadata(member.getMemberId(), metaSeq);
     }
+
+    @ApiOperation("메타데이터 예약 취소하기")
+    @PutMapping("/cancel-reserve")
+    @ResponseStatus(HttpStatus.OK)
+    public void cancelReserveMetadata(
+            @RequestParam int metaSeq
+    ) {
+        metadataService.cancelReserveMetadata(metaSeq);
+    }
 }
