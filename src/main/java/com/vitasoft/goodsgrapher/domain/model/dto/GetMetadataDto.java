@@ -15,6 +15,7 @@ public class GetMetadataDto {
     private final String applicationNumber;
     private final String reserveId;
     private final String regId;
+    private final int imgCount;
 
     public GetMetadataDto(Metadata metadata) {
         this.metaSeq = metadata.getMetaSeq();
@@ -24,7 +25,8 @@ public class GetMetadataDto {
         this.companyName = metadata.getCompanyName();
         this.registrationNumber = metadata.getRegistrationNumber();
         this.applicationNumber = metadata.getApplicationNumber();
-        this.reserveId = metadata.getReserveId();
+        this.reserveId = metadata.getReservId();
         this.regId = metadata.getRegId();
+        this.imgCount = metadata.getImgCount();
     }
 }
