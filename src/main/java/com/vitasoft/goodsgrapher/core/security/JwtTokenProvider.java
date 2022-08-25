@@ -35,7 +35,7 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expireAt = new Date(now.getTime() + jwtExpirationMs);
         return Jwts.builder()
-                .claim("userId", memberId)
+                .claim("memberId", memberId)
                 .claim("role", memberRole.toString())
                 .setIssuedAt(now)
                 .setExpiration(expireAt)
@@ -64,7 +64,7 @@ public class JwtTokenProvider {
     }
 
     protected Authentication getAuthentication(Claims claims) {
-        return new UsernamePasswordAuthenticationToken(claims.get("userId"), "", getAuthorities(claims));
+        return new UsernamePasswordAuthenticationToken(claims.get("memberId"), "", getAuthorities(claims));
     }
 
     private Collection<GrantedAuthority> getAuthorities(Claims claims) {

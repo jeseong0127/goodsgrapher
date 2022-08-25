@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer memberNo = null;
+    private Integer memberNo;
 
     private String memberId;
 

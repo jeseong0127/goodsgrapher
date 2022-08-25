@@ -25,7 +25,7 @@ public class GetMetadataDto {
         this.companyName = metadata.getCompanyName();
         this.registrationNumber = metadata.getRegistrationNumber();
         this.applicationNumber = metadata.getApplicationNumber();
-        this.reserveId = metadata.getReservId();
+        this.reserveId = metadata.getReserveId();
         this.regId = metadata.getRegId();
         this.imgCount = metadata.getImgCount();
     }

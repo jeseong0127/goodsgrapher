@@ -1,5 +1,7 @@
 package com.vitasoft.goodsgrapher.domain.model.kipris.entity;
 
+import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,10 +10,14 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "kps_metadata")
 @Getter
+@Setter
+@DynamicUpdate
 @RequiredArgsConstructor
 public class Metadata {
     @Id
@@ -30,9 +36,15 @@ public class Metadata {
 
     private String applicationNumber;
 
-    private String reservId;
+    @Column(name = "RESERV_ID")
+    private String reserveId;
+
+    @Column(name = "RESERV_DATE")
+    private LocalDateTime reserveDate;
 
     private String regId;
+
+    private LocalDateTime regDate;
 
     private int imgCount;
 }
