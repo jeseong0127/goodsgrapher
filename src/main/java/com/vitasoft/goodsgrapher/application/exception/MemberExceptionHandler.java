@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class MemberExceptionHandler {
     @ExceptionHandler(MemberNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleUserNotFound(MemberNotFoundException exception) {
+    public ErrorResponse handleMemberNotFound(MemberNotFoundException exception) {
         return new ErrorResponse(HttpStatus.NOT_FOUND, "Member-001", exception.getMessage());
     }
 }
