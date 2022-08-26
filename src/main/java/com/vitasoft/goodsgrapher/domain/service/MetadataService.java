@@ -43,4 +43,8 @@ public class MetadataService {
         metadata.setReserveDate(null);
         metadataRepository.save(metadata);
     }
+
+    public GetMetadataDto getMetadataDetail(int metaSeq) {
+        return new GetMetadataDto(metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq)));
+    }
 }
