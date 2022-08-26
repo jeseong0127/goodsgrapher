@@ -32,20 +32,20 @@ public class MetadataController {
     }
 
     @ApiOperation("메타데이터 예약하기")
-    @PutMapping("/reserve")
+    @PutMapping("/{metaSeq}/reserve")
     @ResponseStatus(HttpStatus.OK)
     public void reserveMetadata(
             @MemberInfo AuthenticatedMember member,
-            @RequestParam int metaSeq
+            @PathVariable int metaSeq
     ) {
         metadataService.reserveMetadata(member.getMemberId(), metaSeq);
     }
 
     @ApiOperation("메타데이터 예약 취소하기")
-    @PutMapping("/cancel-reserve")
+    @PutMapping("/{metaSeq}/cancel-reserve")
     @ResponseStatus(HttpStatus.OK)
     public void cancelReserveMetadata(
-            @RequestParam int metaSeq
+            @PathVariable int metaSeq
     ) {
         metadataService.cancelReserveMetadata(metaSeq);
     }
