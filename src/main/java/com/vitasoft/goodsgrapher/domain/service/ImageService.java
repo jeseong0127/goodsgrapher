@@ -30,9 +30,8 @@ public class ImageService {
 
     private void uploadImage(String imagePath, UploadImageDto uploadImageDto) throws IOException {
         File directory = new File(imagePath, uploadImageDto.getDate());
+        File image = new File(imagePath + File.separator + uploadImageDto.getFileName() + uploadImageDto.getFileType());
         FileUtils.forceMkdir(directory);
-
-        File image = new File(directory.getPath(), uploadImageDto.getFile().getName());
 
         uploadImageDto.getFile().transferTo(image);
     }
