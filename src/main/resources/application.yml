@@ -18,6 +18,10 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 30MB
 
 kipris:
   datasource:
@@ -33,10 +37,13 @@ sso:
     username: ${DATABASE_USERNAME2}
     password: ${DATABASE_PASSWORD2}
 
-
 app:
   jwtSecret: ${APP_JWT_SECRET}
   jwtExpirationMs: ${APP_JWT_EXPIRATION_MS}
+
+image:
+  upload-path:
+    metadata: ${METADATA_UPLOAD_PATH}
 
 logging:
   level:

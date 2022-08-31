@@ -1,5 +1,6 @@
 package com.vitasoft.goodsgrapher.application.controller;
 
+import com.vitasoft.goodsgrapher.application.request.MetadataRequest;
 import com.vitasoft.goodsgrapher.application.response.MetadataDetailResponse;
 import com.vitasoft.goodsgrapher.application.response.MetadataResponse;
 import com.vitasoft.goodsgrapher.core.security.AuthenticatedMember;
@@ -7,9 +8,12 @@ import com.vitasoft.goodsgrapher.core.security.MemberInfo;
 import com.vitasoft.goodsgrapher.domain.service.MetadataService;
 import io.swagger.annotations.ApiOperation;
 
+import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,5 +61,15 @@ public class MetadataController {
             @PathVariable int metaSeq
     ) {
         return new MetadataDetailResponse(metadataService.getMetadataDetail(metaSeq));
+    }
+
+    @ApiOperation("메타데이터 작업 하기")
+    @PutMapping("/upload")
+    @ResponseStatus(HttpStatus.OK)
+    public void uploadMetadata(
+            @MemberInfo AuthenticatedMember member,
+            @Valid @ModelAttribute MetadataRequest metadataRequest
+    ) {
+        metadataService.uploadMetadata(member.getMemberId(), metadataRequest);
     }
 }
