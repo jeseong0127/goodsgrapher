@@ -8,6 +8,10 @@ group = 'com.vitasoft'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+bootJar{
+    archiveFileName = 'goods-grapher.jar'
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -27,6 +31,8 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.17.0'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'commons-fileupload:commons-fileupload:1.4'
 
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
