@@ -35,7 +35,7 @@ public class MetadataService {
     public void reserveMetadata(String memberId, int metaSeq) {
         int reservedCount = metadataRepository.countByReserveId(memberId);
 
-        if (reservedCount > 3)
+        if (reservedCount >= 3)
             throw new ExceededReservedCountLimitException();
 
         Metadata metadata = metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq));
