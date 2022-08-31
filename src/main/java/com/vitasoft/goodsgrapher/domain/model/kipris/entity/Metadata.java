@@ -44,6 +44,8 @@ public class Metadata {
 
     private String regId;
 
+    private String regName;
+
     private LocalDateTime regDate;
 
     private int imgCount;
