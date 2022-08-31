@@ -16,7 +16,7 @@ public class MemberService {
     private final MetadataRepository metadataRepository;
 
     public List<GetMetadataDto> getMetadata(String memberId) {
-        return metadataRepository.findAllByReserveId(memberId).stream()
+        return metadataRepository.findAllByReserveIdOrRegId(memberId, memberId).stream()
                 .map(GetMetadataDto::new)
                 .collect(Collectors.toList());
     }

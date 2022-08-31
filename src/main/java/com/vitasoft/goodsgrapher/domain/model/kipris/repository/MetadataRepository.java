@@ -13,5 +13,5 @@ public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
 
     int countByReserveId(String reserveId);
 
-    List<Metadata> findAllByReserveId(String memberId);
+    List<Metadata> findAllByReserveIdOrRegId(String reserveId, String regId);
 }
