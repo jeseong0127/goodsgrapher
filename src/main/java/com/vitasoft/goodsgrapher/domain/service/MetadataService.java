@@ -2,10 +2,12 @@ package com.vitasoft.goodsgrapher.domain.service;
 
 import com.vitasoft.goodsgrapher.application.request.MetadataRequest;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExceededReservedCountLimitException;
+import com.vitasoft.goodsgrapher.domain.exception.metadata.ExistsWorkedMetadataException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.MetadataNotFoundException;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetMetadataDto;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.ArticleFile;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.Metadata;
+import com.vitasoft.goodsgrapher.domain.model.kipris.repository.AdjustmentRepository;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.ArticleFileRepository;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.MetadataRepository;
 
@@ -26,6 +28,8 @@ public class MetadataService {
 
     private final MetadataRepository metadataRepository;
 
+    private final AdjustmentRepository adjustmentRepository;
+
     public List<GetMetadataDto> getMetadataList() {
         return metadataRepository.findAllByImgCountLessThan(62).stream()
                 .map(GetMetadataDto::new)
@@ -34,6 +38,9 @@ public class MetadataService {
 
     public void reserveMetadata(String memberId, int metaSeq) {
         int reservedCount = metadataRepository.countByReserveId(memberId);
+
+        if (adjustmentRepository.findByMetaSeqAndAdjustId(metaSeq, memberId).isPresent())
+            throw new ExistsWorkedMetadataException();
 
         if (reservedCount >= 3)
             throw new ExceededReservedCountLimitException();
