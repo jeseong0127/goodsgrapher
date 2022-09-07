@@ -2,6 +2,7 @@ package com.vitasoft.goodsgrapher.application.exception;
 
 import com.vitasoft.goodsgrapher.core.response.ErrorResponse;
 import com.vitasoft.goodsgrapher.domain.exception.member.MemberNotFoundException;
+import com.vitasoft.goodsgrapher.domain.exception.member.NotMatchPasswordException;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -17,5 +18,11 @@ public class MemberExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleMemberNotFound(MemberNotFoundException exception) {
         return new ErrorResponse(HttpStatus.NOT_FOUND, "Member-001", exception.getMessage());
+    }
+
+    @ExceptionHandler(NotMatchPasswordException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleNotMatchPassword(NotMatchPasswordException exception) {
+        return new ErrorResponse(HttpStatus.CONFLICT, "Member-002", exception.getMessage());
     }
 }

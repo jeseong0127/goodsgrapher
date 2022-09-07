@@ -1,5 +1,5 @@
 package com.vitasoft.goodsgrapher.domain.model.enums;
 
 public enum MemberRole {
-    ROLE001, ROLE002, ROLE003
+    R001, R002, R003, R004, R005
 }
