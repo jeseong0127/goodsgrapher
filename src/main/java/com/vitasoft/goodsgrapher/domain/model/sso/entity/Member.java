@@ -24,6 +24,8 @@ public class Member {
 
     private String memberId;
 
+    private String memberPw;
+
     private String memberName;
 
     private String memberPhone;
@@ -35,5 +37,5 @@ public class Member {
     private String providerId;
 
     @Enumerated(EnumType.STRING)
-    private final MemberRole memberRole = MemberRole.ROLE001;
+    private MemberRole memberRole;
 }

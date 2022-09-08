@@ -1,7 +1,6 @@
 package com.vitasoft.goodsgrapher.application.request;
 
 import com.sun.istack.NotNull;
-import io.swagger.annotations.ApiModelProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,11 +9,9 @@ import lombok.Getter;
 @Getter
 public class LoginRequest {
 
-    @ApiModelProperty(example = "2187759674")
     @NotNull
-    private final String providerId;
+    private final String memberId;
 
-    @ApiModelProperty(example = "010-0000-0000")
     @NotNull
-    private final String phone;
+    private final String memberPw;
 }
