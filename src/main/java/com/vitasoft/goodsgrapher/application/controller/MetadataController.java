@@ -1,5 +1,6 @@
 package com.vitasoft.goodsgrapher.application.controller;
 
+import com.vitasoft.goodsgrapher.application.request.DeleteMetadataRequest;
 import com.vitasoft.goodsgrapher.application.request.MetadataRequest;
 import com.vitasoft.goodsgrapher.application.response.MetadataDetailResponse;
 import com.vitasoft.goodsgrapher.application.response.MetadataResponse;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,5 +73,15 @@ public class MetadataController {
             @Valid @ModelAttribute MetadataRequest metadataRequest
     ) {
         metadataService.uploadMetadata(member.getMemberId(), metadataRequest);
+    }
+
+    @ApiOperation("메타데이터 삭제 하기")
+    @DeleteMapping("/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteMetadata(
+            @MemberInfo AuthenticatedMember member,
+            @Valid @ModelAttribute DeleteMetadataRequest deleteMetadataRequest
+    ) {
+        metadataService.deleteMetadata(member.getMemberId(), deleteMetadataRequest);
     }
 }
