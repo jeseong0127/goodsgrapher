@@ -1,10 +1,13 @@
 package com.vitasoft.goodsgrapher.domain.service;
 
+import com.vitasoft.goodsgrapher.application.request.DeleteMetadataRequest;
 import com.vitasoft.goodsgrapher.application.request.MetadataRequest;
 import com.vitasoft.goodsgrapher.domain.exception.member.MemberNotFoundException;
+import com.vitasoft.goodsgrapher.domain.exception.metadata.ArticleFileNotFoundException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExceededReservedCountLimitException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExistsWorkedMetadataException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.MetadataNotFoundException;
+import com.vitasoft.goodsgrapher.domain.exception.metadata.RegIdIsNotWorkerException;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetMetadataDto;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.ArticleFile;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.Metadata;
@@ -83,8 +86,20 @@ public class MetadataService {
         metadata.setRegId(memberId);
         metadata.setRegName(member.getMemberName());
         metadata.setRegDate(LocalDateTime.now());
-        metadata.setImgCount(metadata.getImgCount() + defaultImageCount);
+        metadata.setImgCount(defaultImageCount);
 
         metadataRepository.save(metadata);
+    }
+
+    public void deleteMetadata(String memberId, DeleteMetadataRequest deleteMetadataRequest) {
+        metadataRepository.findByMetaSeqAndRegId(deleteMetadataRequest.getMetaSeq(), memberId)
+                .orElseThrow(RegIdIsNotWorkerException::new);
+
+        for (int i = 0; i < deleteMetadataRequest.getArticleFileId().size(); i++) {
+            ArticleFile articleFile = articleFileRepository.findById(deleteMetadataRequest.getArticleFileId().get(i))
+                    .orElseThrow(ArticleFileNotFoundException::new);
+            articleFile.setIsDeleted("1");
+            articleFileRepository.save(articleFile);
+        }
     }
 }
