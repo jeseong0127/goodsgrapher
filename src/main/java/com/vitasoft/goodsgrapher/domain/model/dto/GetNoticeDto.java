@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class GetArticlesDto {
+public class GetNoticeDto {
     private final int articleId;
     private final String boardName;
     private final String title;
@@ -17,16 +17,7 @@ public class GetArticlesDto {
     private final String regName;
     private final LocalDateTime regDate;
 
-    private final int viewCount;
-    private final String answer;
-    private final String ansId;
-    private final String ansName;
-    private final LocalDateTime ansDate;
-    private final char ansChk;
-    private final String ansType;
-    private final String ansTypeName;
-
-    public GetArticlesDto(Article article) {
+    public GetNoticeDto(Article article) {
         this.articleId = article.getArticleId();
         this.boardName = String.valueOf(article.getBoardName());
         this.title = article.getTitle();
@@ -35,14 +26,5 @@ public class GetArticlesDto {
         this.regId = article.getRegId();
         this.regName = article.getRegName();
         this.regDate = article.getRegDate();
-
-        this.viewCount = article.getViewCount();
-        this.answer = article.getAnswer();
-        this.ansId = article.getAnsId();
-        this.ansName = article.getAnsName();
-        this.ansDate = article.getAnsDate();
-        this.ansChk = article.getAnsChk();
-        this.ansType = article.getAnsType();
-        this.ansTypeName = article.getAnsTypeName();
     }
 }

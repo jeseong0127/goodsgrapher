@@ -1,8 +1,7 @@
 package com.vitasoft.goodsgrapher.application.controller;
 
 import com.vitasoft.goodsgrapher.application.response.ArticleResponse;
-import com.vitasoft.goodsgrapher.core.security.AuthenticatedMember;
-import com.vitasoft.goodsgrapher.core.security.MemberInfo;
+import com.vitasoft.goodsgrapher.application.response.LatestNoticeResponse;
 import com.vitasoft.goodsgrapher.domain.service.ArticleService;
 import io.swagger.annotations.ApiOperation;
 
@@ -27,4 +26,13 @@ public class ArticleController {
     ) {
         return new ArticleResponse(articleService.getArticles());
     }
+
+    @ApiOperation("최신 공지사항 가져오기")
+    @GetMapping("/latest-notice")
+    @ResponseStatus(HttpStatus.OK)
+    public LatestNoticeResponse getLatestNotice(
+    ) {
+        return new LatestNoticeResponse(articleService.getLatestNotice());
+    }
+
 }

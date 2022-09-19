@@ -1,6 +1,8 @@
 package com.vitasoft.goodsgrapher.domain.service;
 
 import com.vitasoft.goodsgrapher.domain.model.dto.GetArticlesDto;
+import com.vitasoft.goodsgrapher.domain.model.dto.GetNoticeDto;
+import com.vitasoft.goodsgrapher.domain.model.enums.BoardName;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.ArticleRepository;
 
 import java.util.List;
@@ -19,5 +21,9 @@ public class ArticleService {
         return articleRepository.findAll().stream()
                 .map(GetArticlesDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public GetNoticeDto getLatestNotice() {
+        return new GetNoticeDto(articleRepository.findTopByBoardNameOrderByArticleIdDesc(BoardName.NOTICE));
     }
 }
