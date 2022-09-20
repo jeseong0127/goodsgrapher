@@ -17,4 +17,6 @@ public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
     List<Metadata> findAllByReserveIdOrRegId(String reserveId, String regId);
 
     Optional<Metadata> findByMetaSeqAndRegId(int metaSeq, String memberId);
+
+    List<Metadata> findAllByArticleNameContainingOrModelNameContainingOrCompanyNameContaining(String articleName, String modelName, String CompanyName);
 }

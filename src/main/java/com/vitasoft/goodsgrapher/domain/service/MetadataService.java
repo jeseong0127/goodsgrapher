@@ -102,4 +102,10 @@ public class MetadataService {
             articleFileRepository.save(articleFile);
         }
     }
+
+    public List<GetMetadataDto> getSearchMetadata(String data) {
+        return metadataRepository.findAllByArticleNameContainingOrModelNameContainingOrCompanyNameContaining(data, data, data).stream()
+                .map(GetMetadataDto::new)
+                .collect(Collectors.toList());
+    }
 }
