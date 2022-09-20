@@ -1,6 +1,6 @@
 package com.vitasoft.goodsgrapher.application.response;
 
-import com.vitasoft.goodsgrapher.domain.model.dto.GetArticleDto;
+import com.vitasoft.goodsgrapher.domain.model.dto.GetArticleFileDto;
 
 import java.util.List;
 
@@ -9,6 +9,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ArticleResponse {
-    private final List<GetArticleDto> articles;
+public class ArticleFileResponse {
+    List<GetArticleFileDto> images;
 }

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class GetArticlesDto {
+public class GetArticleDto {
     private final int articleId;
     private final String boardName;
     private final String title;
@@ -26,7 +26,7 @@ public class GetArticlesDto {
     private final String ansType;
     private final String ansTypeName;
 
-    public GetArticlesDto(Article article) {
+    public GetArticleDto(Article article) {
         this.articleId = article.getArticleId();
         this.boardName = String.valueOf(article.getBoardName());
         this.title = article.getTitle();
