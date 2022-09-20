@@ -2,6 +2,7 @@ package com.vitasoft.goodsgrapher.application.controller;
 
 import com.vitasoft.goodsgrapher.application.request.DeleteMetadataRequest;
 import com.vitasoft.goodsgrapher.application.request.MetadataRequest;
+import com.vitasoft.goodsgrapher.application.response.ArticleFileResponse;
 import com.vitasoft.goodsgrapher.application.response.MetadataDetailResponse;
 import com.vitasoft.goodsgrapher.application.response.MetadataResponse;
 import com.vitasoft.goodsgrapher.core.security.AuthenticatedMember;
@@ -64,6 +65,15 @@ public class MetadataController {
             @PathVariable int metaSeq
     ) {
         return new MetadataDetailResponse(metadataService.getMetadataDetail(metaSeq));
+    }
+
+    @ApiOperation("메타데이터 작업한 이미지 보기")
+    @GetMapping("/{metaSeq}/images")
+    @ResponseStatus(HttpStatus.OK)
+    public ArticleFileResponse getMetadataImages(
+            @PathVariable int metaSeq
+    ) {
+        return new ArticleFileResponse(metadataService.getMetadataImages(metaSeq));
     }
 
     @ApiOperation("메타데이터 작업 하기")

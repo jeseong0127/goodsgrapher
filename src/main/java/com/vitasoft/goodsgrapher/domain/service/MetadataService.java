@@ -8,6 +8,7 @@ import com.vitasoft.goodsgrapher.domain.exception.metadata.ExceededReservedCount
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExistsWorkedMetadataException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.MetadataNotFoundException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.RegIdIsNotWorkerException;
+import com.vitasoft.goodsgrapher.domain.model.dto.GetArticleFileDto;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetMetadataDto;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.ArticleFile;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.Metadata;
@@ -106,6 +107,12 @@ public class MetadataService {
     public List<GetMetadataDto> getSearchMetadata(String data) {
         return metadataRepository.findAllByArticleNameContainingOrModelNameContainingOrCompanyNameContaining(data, data, data).stream()
                 .map(GetMetadataDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<GetArticleFileDto> getMetadataImages(int metaSeq) {
+        return articleFileRepository.findALlByArticleIdAndIsDeleted(metaSeq, "0").stream()
+                .map(GetArticleFileDto::new)
                 .collect(Collectors.toList());
     }
 }

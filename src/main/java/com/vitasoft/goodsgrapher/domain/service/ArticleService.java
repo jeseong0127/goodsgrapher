@@ -1,6 +1,6 @@
 package com.vitasoft.goodsgrapher.domain.service;
 
-import com.vitasoft.goodsgrapher.domain.model.dto.GetArticlesDto;
+import com.vitasoft.goodsgrapher.domain.model.dto.GetArticleDto;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetNoticeDto;
 import com.vitasoft.goodsgrapher.domain.model.enums.BoardName;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.ArticleRepository;
@@ -17,9 +17,9 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public List<GetArticlesDto> getArticles() {
+    public List<GetArticleDto> getArticles() {
         return articleRepository.findAll().stream()
-                .map(GetArticlesDto::new)
+                .map(GetArticleDto::new)
                 .collect(Collectors.toList());
     }
 
