@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -84,4 +85,14 @@ public class MetadataController {
     ) {
         metadataService.deleteMetadata(member.getMemberId(), deleteMetadataRequest);
     }
+
+    @ApiOperation("메타데이터 검색어로 찾기")
+    @GetMapping("/search")
+    @ResponseStatus(HttpStatus.OK)
+    public MetadataResponse getSearchMetadata(
+            @RequestParam String data
+    ) {
+        return new MetadataResponse(metadataService.getSearchMetadata(data));
+    }
+
 }
