@@ -39,6 +39,10 @@ public class Metadata {
     @Column(name = "LASTRIGHT_HOLDERNAME")
     private String lastRightHolderName;
 
+    private String pathImg;
+
+    private String pathImgGoods;
+
     @Column(name = "RESERV_ID")
     private String reserveId;
 
