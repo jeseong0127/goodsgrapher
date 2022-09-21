@@ -100,6 +100,18 @@ public class MetadataService {
         metadataRepository.save(metadata);
     }
 
+    public void updateMetadata(String memberId, MetadataRequest metadataRequest) {
+
+        Metadata metadata = metadataRepository.findById(metadataRequest.getMetaSeq()).orElseThrow(() -> new MetadataNotFoundException(metadataRequest.getMetaSeq()));
+
+        int maxDisplayOrder = articleFileRepository.findTopByArticleIdOrderByArticleFileIdDesc(metadataRequest.getMetaSeq()).getDisplayOrder();
+
+        for (int i = 0; i < metadataRequest.getImages().size(); i++) {
+            ArticleFile articleFile = imageService.uploadMetadataImage(memberId, metadata, metadataRequest.getImages().get(i), maxDisplayOrder + (i + 1));
+            articleFileRepository.save(articleFile);
+        }
+    }
+
     public void deleteMetadata(String memberId, DeleteMetadataRequest deleteMetadataRequest) {
         metadataRepository.findByMetaSeqAndRegId(deleteMetadataRequest.getMetaSeq(), memberId)
                 .orElseThrow(RegIdIsNotWorkerException::new);
