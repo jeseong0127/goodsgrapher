@@ -10,6 +10,7 @@ import com.vitasoft.goodsgrapher.core.security.MemberInfo;
 import com.vitasoft.goodsgrapher.domain.service.MetadataService;
 import io.swagger.annotations.ApiOperation;
 
+import java.util.List;
 import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -28,19 +29,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/metadata")
 @RequiredArgsConstructor
 public class MetadataController {
-
     private final MetadataService metadataService;
 
-    @ApiOperation("메타데이터 리스트 가져오기")
-    @GetMapping()
+    @ApiOperation("메타데이터 조회하기")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public MetadataResponse getMetadataList(
+    public MetadataResponse getMetadata(
+            @RequestParam(required = false) String word,
+            @RequestParam(required = false) List<String> images
     ) {
-        return new MetadataResponse(metadataService.getMetadataList());
+        if (word != null) {
+            return new MetadataResponse(metadataService.getSearchMetadata(word));
+        } else if (images != null) {
+            return new MetadataResponse(metadataService.getImageSearchMetadata(images));
+        } else {
+            return new MetadataResponse(metadataService.getMetadataList());
+        }
     }
 
     @ApiOperation("메타데이터 예약하기")
-    @PutMapping("/{metaSeq}/reserve")
+    @PostMapping("/reservation/{metaSeq}")
     @ResponseStatus(HttpStatus.OK)
     public void reserveMetadata(
             @MemberInfo AuthenticatedMember member,
@@ -50,15 +58,15 @@ public class MetadataController {
     }
 
     @ApiOperation("메타데이터 예약 취소하기")
-    @PutMapping("/{metaSeq}/cancel-reserve")
-    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/reservation/{metaSeq}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void cancelReserveMetadata(
             @PathVariable int metaSeq
     ) {
         metadataService.cancelReserveMetadata(metaSeq);
     }
 
-    @ApiOperation("메타데이터 작업 보기")
+    @ApiOperation("메타데이터 작업보기")
     @GetMapping("/{metaSeq}")
     @ResponseStatus(HttpStatus.OK)
     public MetadataDetailResponse getMetadataDetail(
@@ -67,7 +75,7 @@ public class MetadataController {
         return new MetadataDetailResponse(metadataService.getMetadataDetail(metaSeq));
     }
 
-    @ApiOperation("메타데이터 작업한 이미지 보기")
+    @ApiOperation("메타데이터 작업한 이미지보기")
     @GetMapping("/{metaSeq}/images")
     @ResponseStatus(HttpStatus.OK)
     public ArticleFileResponse getMetadataImages(
@@ -76,9 +84,9 @@ public class MetadataController {
         return new ArticleFileResponse(metadataService.getMetadataImages(metaSeq));
     }
 
-    @ApiOperation("메타데이터 작업 하기")
-    @PutMapping("/upload")
-    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation("메타데이터 작업하기")
+    @PostMapping("/upload")
+    @ResponseStatus(HttpStatus.CREATED)
     public void uploadMetadata(
             @MemberInfo AuthenticatedMember member,
             @Valid @ModelAttribute MetadataRequest metadataRequest
@@ -86,23 +94,13 @@ public class MetadataController {
         metadataService.uploadMetadata(member.getMemberId(), metadataRequest);
     }
 
-    @ApiOperation("메타데이터 삭제 하기")
+    @ApiOperation("메타데이터 삭제하기")
     @DeleteMapping("/delete")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMetadata(
             @MemberInfo AuthenticatedMember member,
             @Valid @ModelAttribute DeleteMetadataRequest deleteMetadataRequest
     ) {
         metadataService.deleteMetadata(member.getMemberId(), deleteMetadataRequest);
     }
-
-    @ApiOperation("메타데이터 검색어로 찾기")
-    @GetMapping("/search")
-    @ResponseStatus(HttpStatus.OK)
-    public MetadataResponse getSearchMetadata(
-            @RequestParam String data
-    ) {
-        return new MetadataResponse(metadataService.getSearchMetadata(data));
-    }
-
 }

@@ -19,6 +19,7 @@ import com.vitasoft.goodsgrapher.domain.model.sso.entity.Member;
 import com.vitasoft.goodsgrapher.domain.model.sso.repository.MemberRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,6 +72,12 @@ public class MetadataService {
         return new GetMetadataDto(metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq)));
     }
 
+    public List<GetArticleFileDto> getMetadataImages(int metaSeq) {
+        return articleFileRepository.findALlByArticleIdAndIsDeleted(metaSeq, "0").stream()
+                .map(GetArticleFileDto::new)
+                .collect(Collectors.toList());
+    }
+
     public void uploadMetadata(String memberId, MetadataRequest metadataRequest) {
         int defaultImageCount = 62;
 
@@ -111,9 +118,17 @@ public class MetadataService {
                 .collect(Collectors.toList());
     }
 
-    public List<GetArticleFileDto> getMetadataImages(int metaSeq) {
-        return articleFileRepository.findALlByArticleIdAndIsDeleted(metaSeq, "0").stream()
-                .map(GetArticleFileDto::new)
-                .collect(Collectors.toList());
+    public List<GetMetadataDto> getImageSearchMetadata(List<String> data) {
+        List<GetMetadataDto> getMetadataDtos = new ArrayList<>();
+
+        for (String RegistrationNumber : data) {
+            metadataRepository.findByPathImgContaining(RegistrationNumber)
+                    .ifPresent(metadata -> getMetadataDtos.add(new GetMetadataDto(metadata, "photo")));
+
+            metadataRepository.findByPathImgGoodsContaining(RegistrationNumber)
+                    .ifPresent(metadata -> getMetadataDtos.add(new GetMetadataDto(metadata, "drawing")));
+        }
+
+        return getMetadataDtos;
     }
 }
