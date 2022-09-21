@@ -50,7 +50,7 @@ public class MetadataController {
 
     @ApiOperation("메타데이터 예약하기")
     @PostMapping("/reservation/{metaSeq}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public void reserveMetadata(
             @MemberInfo AuthenticatedMember member,
             @PathVariable int metaSeq
