@@ -50,7 +50,7 @@ public class MetadataController {
 
     @ApiOperation("메타데이터 예약하기")
     @PostMapping("/reservation/{metaSeq}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public void reserveMetadata(
             @MemberInfo AuthenticatedMember member,
             @PathVariable int metaSeq
@@ -96,7 +96,7 @@ public class MetadataController {
     }
 
     @ApiOperation("메타데이터 수정하기")
-    @PutMapping("/update")
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public void updateMetadata(
             @MemberInfo AuthenticatedMember member,
@@ -106,7 +106,7 @@ public class MetadataController {
     }
 
     @ApiOperation("메타데이터 삭제하기")
-    @DeleteMapping("/delete")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMetadata(
             @MemberInfo AuthenticatedMember member,
