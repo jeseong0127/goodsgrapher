@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArticleFileRepository extends JpaRepository<ArticleFile, Integer> {
     List<ArticleFile> findALlByArticleIdAndIsDeleted(int metaSeq, String isDeleted);
+
+    ArticleFile findTopByArticleIdOrderByArticleFileIdDesc(int metaSeq);
 }

@@ -23,7 +23,7 @@ public class ImageService {
             UploadImageDto uploadImageDto = new UploadImageDto(file);
             String fileName = formatFileName(memberId, metadata, displayOrder, uploadImageDto.getFileType());
             uploadImage(imagePath, uploadImageDto, fileName);
-            return new ArticleFile(metadata.getMetaSeq(), uploadImageDto.getDisplayName(), fileName, uploadImageDto.getFileSize(), uploadImageDto.getFileType(), memberId, displayOrder);
+            return new ArticleFile(metadata.getMetaSeq(), fileName.substring(fileName.indexOf("/") + 1), fileName, uploadImageDto.getFileSize(), uploadImageDto.getFileType(), memberId, displayOrder);
         } catch (IOException e) {
             throw new CannotUploadImageException();
         }
@@ -42,7 +42,7 @@ public class ImageService {
 
         String[] folderNameParts = {memberId, metadata.getLastRightHolderName(), metadata.getArticleName(), metadata.getModelName(), metadata.getRegistrationNumber(), metadata.getDsshpclsscd()};
         String folderName = String.join("_", folderNameParts);
-        String fileName = "/VS_2022_" + formatMetaSeq + "_0_-1_" + displayOrder + fileType;
+        String fileName = "/VS_2022_" + formatMetaSeq + "_0_-1_" + (displayOrder + 1) + fileType;
         return folderName + fileName;
     }
 
