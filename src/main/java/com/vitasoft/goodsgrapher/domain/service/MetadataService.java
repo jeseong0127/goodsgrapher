@@ -76,12 +76,13 @@ public class MetadataService {
 
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(MemberNotFoundException::new);
 
+        Metadata metadata = metadataRepository.findById(metadataRequest.getMetaSeq()).orElseThrow(() -> new MetadataNotFoundException(metadataRequest.getMetaSeq()));
+
         for (int i = 0; i < metadataRequest.getImages().size(); i++) {
-            ArticleFile articleFile = imageService.uploadMetadataImage(memberId, metadataRequest.getMetaSeq(), metadataRequest.getImages().get(i), i);
+            ArticleFile articleFile = imageService.uploadMetadataImage(memberId, metadata, metadataRequest.getImages().get(i), i);
             articleFileRepository.save(articleFile);
         }
 
-        Metadata metadata = metadataRepository.findById(metadataRequest.getMetaSeq()).orElseThrow(() -> new MetadataNotFoundException(metadataRequest.getMetaSeq()));
         metadata.setReserveId("N/A");
         metadata.setReserveDate(null);
         metadata.setRegId(memberId);
