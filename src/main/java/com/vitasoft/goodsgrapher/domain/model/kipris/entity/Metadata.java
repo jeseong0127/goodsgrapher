@@ -36,6 +36,9 @@ public class Metadata {
 
     private String applicationNumber;
 
+    @Column(name = "LASTRIGHT_HOLDERNAME")
+    private String lastRightHolderName;
+
     @Column(name = "RESERV_ID")
     private String reserveId;
 
@@ -49,4 +52,12 @@ public class Metadata {
     private LocalDateTime regDate;
 
     private int imgCount;
+
+    private char useYn;
+
+    @Column(name = "SUBSCRIPTION")
+    private String subScription;
+
+    @Column(name = "DSSHPCLSSCD")
+    private String dsshpclsscd;
 }

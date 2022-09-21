@@ -21,13 +21,13 @@ public class UploadImageDto {
     private String fileType;
 
     public UploadImageDto(MultipartFile file) {
-        this.file = file;
-        this.displayName = file.getOriginalFilename();
         LocalDateTime now = LocalDateTime.now();
         this.date = now.format(dateFormatter);
         this.dateTime = now.format(dateTimeFormatter);
+        this.file = file;
+        this.displayName = dateTime + "." + FilenameUtils.getExtension(file.getOriginalFilename());
         this.fileName = date + "/" + dateTime;
         this.fileSize = file.getSize() + "";
-        this.fileType = "." + FilenameUtils.getExtension(displayName);
+        this.fileType = "." + FilenameUtils.getExtension(file.getOriginalFilename());
     }
 }
