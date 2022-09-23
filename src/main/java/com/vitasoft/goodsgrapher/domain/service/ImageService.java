@@ -1,22 +1,31 @@
 package com.vitasoft.goodsgrapher.domain.service;
 
+import com.vitasoft.goodsgrapher.domain.exception.image.CannotViewImageException;
+import com.vitasoft.goodsgrapher.domain.exception.image.ImageNotFoundException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.CannotUploadImageException;
 import com.vitasoft.goodsgrapher.domain.model.dto.UploadImageDto;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.ArticleFile;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.Metadata;
+import com.vitasoft.goodsgrapher.domain.model.kipris.repository.ArticleFileRepository;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@RequiredArgsConstructor
 public class ImageService {
     @Value("${image.upload-path.metadata}")
     private String imagePath;
+
+    private final ArticleFileRepository articleFileRepository;
 
     public ArticleFile uploadMetadataImage(String memberId, Metadata metadata, MultipartFile file, int displayOrder) {
         try {
@@ -53,5 +62,25 @@ public class ImageService {
             zero.append("0".repeat(6 - n.length()));
         }
         return zero + n;
+    }
+
+    public byte[] viewImage(int imageId) {
+        ArticleFile articleFile = articleFileRepository.findById(imageId).orElseThrow(() -> new ImageNotFoundException(imageId));
+        return this.viewImage(imagePath + File.separator + articleFile.getFileName());
+    }
+
+    private byte[] viewImage(String fileName) {
+        try (
+                FileInputStream inputStream = new FileInputStream(fileName);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
+        ) {
+            byte[] buffer = new byte[8192];
+            int length;
+            while ((length = inputStream.read(buffer)) != -1)
+                outputStream.write(buffer, 0, length);
+            return outputStream.toByteArray();
+        } catch (IOException e) {
+            throw new CannotViewImageException(fileName);
+        }
     }
 }
