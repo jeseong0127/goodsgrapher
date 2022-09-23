@@ -19,6 +19,7 @@ import com.vitasoft.goodsgrapher.domain.model.sso.entity.Member;
 import com.vitasoft.goodsgrapher.domain.model.sso.repository.MemberRepository;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,9 +42,23 @@ public class MetadataService {
     private final MemberRepository memberRepository;
 
     public List<GetMetadataDto> getMetadataList() {
+        cancelExcessReserveTime();
+
         return metadataRepository.findAllByImgCountLessThan(62).stream()
                 .map(GetMetadataDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public void cancelExcessReserveTime() {
+        LocalDateTime now = LocalDateTime.now();
+
+        List<Metadata> reservedMetadataList = metadataRepository.findAllByReserveDateNotNull();
+
+        for (Metadata reservedMetadata : reservedMetadataList) {
+            if (ChronoUnit.SECONDS.between(now, reservedMetadata.getReserveDate()) > 10800) {
+                cancelReserveMetadata(reservedMetadata.getMetaSeq());
+            }
+        }
     }
 
     public void reserveMetadata(String memberId, int metaSeq) {
