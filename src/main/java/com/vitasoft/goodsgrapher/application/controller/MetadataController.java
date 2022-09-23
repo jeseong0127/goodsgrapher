@@ -86,7 +86,7 @@ public class MetadataController {
     }
 
     @ApiOperation("메타데이터 작업하기")
-    @PostMapping("/upload")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadMetadata(
             @MemberInfo AuthenticatedMember member,
