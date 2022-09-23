@@ -23,4 +23,6 @@ public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
     Optional<Metadata> findByPathImgContaining(String pathImg);
 
     Optional<Metadata> findByPathImgGoodsContaining(String pathImgGoods);
+
+    List<Metadata> findAllByReserveDateNotNull();
 }
