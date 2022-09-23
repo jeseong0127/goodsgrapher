@@ -17,7 +17,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public List<GetArticleDto> getArticles() {
+    public List<GetArticleDto> getNotices() {
         return articleRepository.findAllByBoardNameAndIsDeletedOrderByArticleIdDesc(BoardName.NOTICE, 'N').stream()
                 .map(GetArticleDto::new)
                 .collect(Collectors.toList());
