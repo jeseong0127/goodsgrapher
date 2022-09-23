@@ -83,4 +83,8 @@ public class ImageService {
             throw new CannotViewImageException(fileName);
         }
     }
+
+    public byte[] viewThumbnailImage(String imagePath) {
+        return this.viewImage(this.imagePath + imagePath);
+    }
 }
