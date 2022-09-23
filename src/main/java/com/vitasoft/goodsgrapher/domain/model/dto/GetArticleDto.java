@@ -16,15 +16,7 @@ public class GetArticleDto {
     private final String regId;
     private final String regName;
     private final LocalDateTime regDate;
-
     private final int viewCount;
-    private final String answer;
-    private final String ansId;
-    private final String ansName;
-    private final LocalDateTime ansDate;
-    private final char ansChk;
-    private final String ansType;
-    private final String ansTypeName;
 
     public GetArticleDto(Article article) {
         this.articleId = article.getArticleId();
@@ -35,14 +27,6 @@ public class GetArticleDto {
         this.regId = article.getRegId();
         this.regName = article.getRegName();
         this.regDate = article.getRegDate();
-
         this.viewCount = article.getViewCount();
-        this.answer = article.getAnswer();
-        this.ansId = article.getAnsId();
-        this.ansName = article.getAnsName();
-        this.ansDate = article.getAnsDate();
-        this.ansChk = article.getAnsChk();
-        this.ansType = article.getAnsType();
-        this.ansTypeName = article.getAnsTypeName();
     }
 }
