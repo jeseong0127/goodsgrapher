@@ -1,6 +1,7 @@
 package com.vitasoft.goodsgrapher.domain.model.kipris.entity;
 
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +30,8 @@ public class Adjustment {
 
     private String regId;
 
+    private String regName;
+
     private LocalDateTime regDate;
 
     private char userGrade;
@@ -36,4 +39,7 @@ public class Adjustment {
     private char adjustYn;
 
     private int passCount;
+
+    @Column(name = "SUBSCRIPTION")
+    private String subScription;
 }
