@@ -41,18 +41,4 @@ public class Article {
     private LocalDateTime regDate;
 
     private int viewCount;
-
-    private String answer;
-
-    private String ansId;
-
-    private String ansName;
-
-    private LocalDateTime ansDate;
-
-    private char ansChk;
-
-    private String ansType;
-
-    private String ansTypeName;
 }

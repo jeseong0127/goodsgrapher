@@ -18,12 +18,12 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     public List<GetArticleDto> getArticles() {
-        return articleRepository.findAll().stream()
+        return articleRepository.findAllByBoardNameAndIsDeletedOrderByArticleIdDesc(BoardName.NOTICE, 'N').stream()
                 .map(GetArticleDto::new)
                 .collect(Collectors.toList());
     }
 
     public GetNoticeDto getLatestNotice() {
-        return new GetNoticeDto(articleRepository.findTopByBoardNameOrderByArticleIdDesc(BoardName.NOTICE));
+        return new GetNoticeDto(articleRepository.findTopByBoardNameAndIsDeletedOrderByArticleIdDesc(BoardName.NOTICE, 'N'));
     }
 }
