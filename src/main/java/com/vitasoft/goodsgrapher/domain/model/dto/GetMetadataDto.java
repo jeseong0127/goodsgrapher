@@ -16,6 +16,7 @@ public class GetMetadataDto {
     private final String companyName;
     private final String registrationNumber;
     private final String applicationNumber;
+    private final String pathImg;
     private final String reserveId;
     private final LocalDateTime reserveDate;
     private final String regId;
@@ -30,6 +31,7 @@ public class GetMetadataDto {
         this.companyName = metadata.getCompanyName();
         this.registrationNumber = metadata.getRegistrationNumber();
         this.applicationNumber = metadata.getApplicationNumber();
+        this.pathImg = metadata.getPathImg();
         this.reserveId = metadata.getReserveId();
         this.reserveDate = metadata.getReserveDate();
         this.regId = metadata.getRegId();
@@ -46,6 +48,7 @@ public class GetMetadataDto {
         this.companyName = metadata.getCompanyName();
         this.registrationNumber = metadata.getRegistrationNumber();
         this.applicationNumber = metadata.getApplicationNumber();
+        this.pathImg = metadata.getPathImg();
         this.reserveId = metadata.getReserveId();
         this.reserveDate = metadata.getReserveDate();
         this.regId = metadata.getRegId();
