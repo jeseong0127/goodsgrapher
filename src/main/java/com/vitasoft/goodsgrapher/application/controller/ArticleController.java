@@ -22,9 +22,9 @@ public class ArticleController {
     @ApiOperation("공지사항 리스트 가져오기")
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ArticleResponse getArticles(
+    public ArticleResponse getNotices(
     ) {
-        return new ArticleResponse(articleService.getArticles());
+        return new ArticleResponse(articleService.getNotices());
     }
 
     @ApiOperation("최신 공지사항 가져오기")
