@@ -18,11 +18,11 @@ public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
 
     Optional<Metadata> findByMetaSeqAndRegId(int metaSeq, String memberId);
 
-    List<Metadata> findAllByArticleNameContainingOrModelNameContainingOrCompanyNameContaining(String articleName, String modelName, String CompanyName);
+    List<Metadata> findAllByArticleNameContainingOrModelNameContainingOrCompanyNameContainingAndReserveIdAndRegIdNullAndImgCountLessThan(String articleName, String modelName, String CompanyName, String reserveId, int imgCount);
 
-    Optional<Metadata> findByPathImgContaining(String pathImg);
+    Optional<Metadata> findByPathImgContainingAndReserveIdAndRegIdNullAndImgCountLessThan(String pathImg, String reserveId, int imgCount);
 
-    Optional<Metadata> findByPathImgGoodsContaining(String pathImgGoods);
+    Optional<Metadata> findByPathImgGoodsContainingAndReserveIdAndRegIdNullAndImgCountLessThan(String pathImgGoods, String reserveId, int imgCount);
 
     List<Metadata> findAllByReserveDateNotNull();
 }
