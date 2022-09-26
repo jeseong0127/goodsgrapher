@@ -76,13 +76,14 @@ public class MetadataController {
         return new MetadataDetailResponse(metadataService.getMetadataDetail(metaSeq));
     }
 
-    @ApiOperation("메타데이터 작업한 이미지보기")
+    @ApiOperation("작업한 메타데이터 이미지보기")
     @GetMapping("/{metaSeq}/images")
     @ResponseStatus(HttpStatus.OK)
     public ArticleFileResponse getMetadataImages(
+            @MemberInfo AuthenticatedMember member,
             @PathVariable int metaSeq
     ) {
-        return new ArticleFileResponse(metadataService.getMetadataImages(metaSeq));
+        return new ArticleFileResponse(metadataService.getMetadataImages(metaSeq, member.getMemberId()));
     }
 
     @ApiOperation("메타데이터 작업하기")
