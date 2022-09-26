@@ -71,9 +71,10 @@ public class MetadataController {
     @GetMapping("/{metaSeq}")
     @ResponseStatus(HttpStatus.OK)
     public MetadataDetailResponse getMetadataDetail(
+            @MemberInfo AuthenticatedMember member,
             @PathVariable int metaSeq
     ) {
-        return new MetadataDetailResponse(metadataService.getMetadataDetail(metaSeq));
+        return new MetadataDetailResponse(metadataService.getMetadataDetail(metaSeq, member.getMemberId()));
     }
 
     @ApiOperation("작업한 메타데이터 이미지보기")

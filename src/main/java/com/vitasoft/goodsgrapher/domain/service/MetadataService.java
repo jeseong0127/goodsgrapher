@@ -85,8 +85,8 @@ public class MetadataService {
         metadataRepository.save(metadata);
     }
 
-    public GetMetadataDto getMetadataDetail(int metaSeq) {
-        return new GetMetadataDto(metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq)));
+    public GetMetadataDto getMetadataDetail(int metaSeq, String memberId) {
+        return new GetMetadataDto(metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq)), articleFileRepository.countByArticleIdAndRegIdAndIsDeleted(metaSeq, memberId, "0"));
     }
 
     public List<GetArticleFileDto> getMetadataImages(int metaSeq, String memberId) {
