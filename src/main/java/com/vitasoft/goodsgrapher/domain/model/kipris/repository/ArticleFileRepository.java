@@ -13,5 +13,5 @@ public interface ArticleFileRepository extends JpaRepository<ArticleFile, Intege
 
     ArticleFile findTopByArticleIdOrderByArticleFileIdDesc(int metaSeq);
 
-    int countByArticleIdAndRegId(int metaSeq, String regId);
+    int countByArticleIdAndRegIdAndIsDeleted(int metaSeq, String regId, String isDeleted);
 }
