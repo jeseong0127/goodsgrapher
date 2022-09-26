@@ -1,7 +1,11 @@
 package com.vitasoft.goodsgrapher.domain.service;
 
+import com.vitasoft.goodsgrapher.application.response.AccountDetailResponse;
+import com.vitasoft.goodsgrapher.domain.exception.metadata.MetadataNotFoundException;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetAccountsDto;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetMetadataDto;
+import com.vitasoft.goodsgrapher.domain.model.kipris.entity.ArticleFile;
+import com.vitasoft.goodsgrapher.domain.model.kipris.entity.Metadata;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.AdjustmentRepository;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.ArticleFileRepository;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.MetadataRepository;
@@ -32,5 +36,13 @@ public class MemberService {
         return adjustmentRepository.findByRegId(memberId).stream()
                 .map(GetAccountsDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public AccountDetailResponse getAccountDetail(int metaSeq, String memberId) {
+        Metadata metadata = metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq));
+
+        List<ArticleFile> articleFile = articleFileRepository.findAllByBoardNameAndArticleIdAndIsDeletedAndRegId("METAIMG", metaSeq, "0", memberId);
+
+        return new AccountDetailResponse(metadata, articleFile);
     }
 }
