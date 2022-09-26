@@ -10,5 +10,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class AccountsResponse {
-    private List<GetAccountsDto> adjustments;
+    private List<GetAccountsDto> accounts;
 }
