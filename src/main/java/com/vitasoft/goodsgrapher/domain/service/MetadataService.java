@@ -90,7 +90,7 @@ public class MetadataService {
     }
 
     public List<GetArticleFileDto> getMetadataImages(int metaSeq) {
-        return articleFileRepository.findALlByArticleIdAndIsDeleted(metaSeq, "0").stream()
+        return articleFileRepository.findALlByBoardNameAndArticleIdAndIsDeleted("METAIMG", metaSeq, "0").stream()
                 .map(GetArticleFileDto::new)
                 .collect(Collectors.toList());
     }
