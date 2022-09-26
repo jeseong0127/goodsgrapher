@@ -55,4 +55,20 @@ public class GetMetadataDto {
         this.regDate = metadata.getRegDate();
         this.imgCount = metadata.getImgCount();
     }
+
+    public GetMetadataDto(Metadata metadata, int count) {
+        this.metaSeq = metadata.getMetaSeq();
+        this.productCategory = metadata.getProductCategory();
+        this.articleName = metadata.getArticleName();
+        this.modelName = metadata.getModelName();
+        this.companyName = metadata.getCompanyName();
+        this.registrationNumber = metadata.getRegistrationNumber();
+        this.applicationNumber = metadata.getApplicationNumber();
+        this.pathImg = metadata.getPathImg();
+        this.reserveId = metadata.getReserveId();
+        this.reserveDate = metadata.getReserveDate();
+        this.regId = metadata.getRegId();
+        this.regDate = metadata.getRegDate();
+        this.imgCount = count;
+    }
 }
