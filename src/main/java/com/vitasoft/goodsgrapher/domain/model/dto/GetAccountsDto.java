@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class GetAdjustmentDto {
+public class GetAccountsDto {
     private final int adjustNo;
     private final int metaSeq;
     private final String adjustId;
@@ -19,7 +19,7 @@ public class GetAdjustmentDto {
     private final int passCount;
     private final String subScription;
 
-    public GetAdjustmentDto(Adjustment adjustment) {
+    public GetAccountsDto(Adjustment adjustment) {
         this.adjustNo = adjustment.getAdjustNo();
         this.metaSeq = adjustment.getMetaSeq();
         this.adjustId = adjustment.getAdjustId();

@@ -1,6 +1,6 @@
 package com.vitasoft.goodsgrapher.application.response;
 
-import com.vitasoft.goodsgrapher.domain.model.dto.GetAdjustmentDto;
+import com.vitasoft.goodsgrapher.domain.model.dto.GetAccountsDto;
 
 import java.util.List;
 
@@ -9,6 +9,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class AdjustmentResponse {
-    private List<GetAdjustmentDto> adjustments;
+public class AccountsResponse {
+    private List<GetAccountsDto> adjustments;
 }

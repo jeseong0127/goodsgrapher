@@ -1,6 +1,6 @@
 package com.vitasoft.goodsgrapher.application.controller;
 
-import com.vitasoft.goodsgrapher.application.response.AdjustmentResponse;
+import com.vitasoft.goodsgrapher.application.response.AccountsResponse;
 import com.vitasoft.goodsgrapher.application.response.MetadataResponse;
 import com.vitasoft.goodsgrapher.core.security.AuthenticatedMember;
 import com.vitasoft.goodsgrapher.core.security.MemberInfo;
@@ -31,11 +31,11 @@ public class MemberController {
     }
 
     @ApiOperation("내 정산목록 가져오기")
-    @GetMapping("/adjustment")
+    @GetMapping("/accounts")
     @ResponseStatus(HttpStatus.OK)
-    public AdjustmentResponse getAdjustment(
+    public AccountsResponse getAccounts(
             @MemberInfo AuthenticatedMember member
     ) {
-        return new AdjustmentResponse(memberService.getAdjustment(member.getMemberId()));
+        return new AccountsResponse(memberService.getAccounts(member.getMemberId()));
     }
 }
