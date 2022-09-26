@@ -3,6 +3,7 @@ package com.vitasoft.goodsgrapher.domain.service;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetAccountsDto;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetMetadataDto;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.AdjustmentRepository;
+import com.vitasoft.goodsgrapher.domain.model.kipris.repository.ArticleFileRepository;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.MetadataRepository;
 
 import java.util.List;
@@ -19,9 +20,11 @@ public class MemberService {
 
     private final AdjustmentRepository adjustmentRepository;
 
+    private final ArticleFileRepository articleFileRepository;
+
     public List<GetMetadataDto> getMetadata(String memberId) {
         return metadataRepository.findAllByReserveIdOrRegId(memberId, memberId).stream()
-                .map(GetMetadataDto::new)
+                .map(metadata -> new GetMetadataDto(metadata, articleFileRepository.countByArticleIdAndRegId(metadata.getMetaSeq(), metadata.getRegId())))
                 .collect(Collectors.toList());
     }
 
