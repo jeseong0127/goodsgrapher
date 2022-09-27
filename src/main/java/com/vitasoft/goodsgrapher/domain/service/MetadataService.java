@@ -51,6 +51,28 @@ public class MetadataService {
                 .collect(Collectors.toList());
     }
 
+    public List<GetMetadataDto> getSearchMetadata(String data) {
+        cancelExcessReserveTime();
+
+        return metadataRepository.findAllByArticleNameContainingOrModelNameContainingOrCompanyNameContainingAndReserveIdAndRegIdNullAndImgCountLessThan(data, data, data, defaultReserveId, 62).stream()
+                .map(GetMetadataDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<GetMetadataDto> getImageSearchMetadata(List<String> data) {
+        cancelExcessReserveTime();
+        List<GetMetadataDto> getMetadataDtos = new ArrayList<>();
+
+        for (String RegistrationNumber : data) {
+            metadataRepository.findByPathImgContainingAndReserveIdAndRegIdNullAndImgCountLessThan(RegistrationNumber, defaultReserveId, 62)
+                    .ifPresent(metadata -> getMetadataDtos.add(new GetMetadataDto(metadata, "photo")));
+
+            metadataRepository.findByPathImgGoodsContainingAndReserveIdAndRegIdNullAndImgCountLessThan(RegistrationNumber, defaultReserveId, 62)
+                    .ifPresent(metadata -> getMetadataDtos.add(new GetMetadataDto(metadata, "drawing")));
+        }
+        return getMetadataDtos;
+    }
+
     public void cancelExcessReserveTime() {
         LocalDateTime now = LocalDateTime.now();
 
@@ -139,25 +161,5 @@ public class MetadataService {
             articleFile.setIsDeleted("1");
             articleFileRepository.save(articleFile);
         }
-    }
-
-    public List<GetMetadataDto> getSearchMetadata(String data) {
-        return metadataRepository.findAllByArticleNameContainingOrModelNameContainingOrCompanyNameContainingAndReserveIdAndRegIdNullAndImgCountLessThan(data, data, data, defaultReserveId, 62).stream()
-                .map(GetMetadataDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<GetMetadataDto> getImageSearchMetadata(List<String> data) {
-        List<GetMetadataDto> getMetadataDtos = new ArrayList<>();
-
-        for (String RegistrationNumber : data) {
-            metadataRepository.findByPathImgContainingAndReserveIdAndRegIdNullAndImgCountLessThan(RegistrationNumber, defaultReserveId, 62)
-                    .ifPresent(metadata -> getMetadataDtos.add(new GetMetadataDto(metadata, "photo")));
-
-            metadataRepository.findByPathImgGoodsContainingAndReserveIdAndRegIdNullAndImgCountLessThan(RegistrationNumber, defaultReserveId, 62)
-                    .ifPresent(metadata -> getMetadataDtos.add(new GetMetadataDto(metadata, "drawing")));
-        }
-
-        return getMetadataDtos;
     }
 }
