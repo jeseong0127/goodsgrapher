@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface AdjustmentRepository extends JpaRepository<Adjustment, Integer> {
     Optional<Adjustment> findByMetaSeqAndAdjustId(int metaSeq, String memberId);
 
-    List<Adjustment> findByRegId(String memberId);
+    List<Adjustment> findByAdjustId(String memberId);
 }
