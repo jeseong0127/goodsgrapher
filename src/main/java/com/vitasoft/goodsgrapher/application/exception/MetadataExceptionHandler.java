@@ -1,9 +1,11 @@
 package com.vitasoft.goodsgrapher.application.exception;
 
 import com.vitasoft.goodsgrapher.core.response.ErrorResponse;
+import com.vitasoft.goodsgrapher.domain.exception.metadata.ArticleFileNotFoundException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExceededReservedCountLimitException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExistsWorkedMetadataException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.MetadataNotFoundException;
+import com.vitasoft.goodsgrapher.domain.exception.metadata.RegIdIsNotWorkerException;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -31,5 +33,17 @@ public class MetadataExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleExistsWorkedMetadata(ExistsWorkedMetadataException exception) {
         return new ErrorResponse(HttpStatus.CONFLICT, "Metadata-003", exception.getMessage());
+    }
+
+    @ExceptionHandler(ExistsWorkedMetadataException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleRegIdIsNotWorker(RegIdIsNotWorkerException exception) {
+        return new ErrorResponse(HttpStatus.CONFLICT, "Metadata-004", exception.getMessage());
+    }
+
+    @ExceptionHandler(ExistsWorkedMetadataException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleArticleFileNotFound(ArticleFileNotFoundException exception) {
+        return new ErrorResponse(HttpStatus.CONFLICT, "Metadata-005", exception.getMessage());
     }
 }
