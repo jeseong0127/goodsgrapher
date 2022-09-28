@@ -22,13 +22,13 @@ public class ImageExceptionHandler {
         return new ErrorResponse(HttpStatus.CONFLICT, "Image-001", exception.getMessage());
     }
 
-    @ExceptionHandler(CannotUploadImageException.class)
+    @ExceptionHandler(CannotViewImageException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleCannotViewImage(CannotViewImageException exception) {
         return new ErrorResponse(HttpStatus.CONFLICT, "Image-002", exception.getMessage());
     }
 
-    @ExceptionHandler(CannotUploadImageException.class)
+    @ExceptionHandler(ImageNotFoundException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleImageNotFound(ImageNotFoundException exception) {
         return new ErrorResponse(HttpStatus.NOT_FOUND, "Image-003", exception.getMessage());

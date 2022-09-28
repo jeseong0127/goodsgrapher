@@ -35,13 +35,13 @@ public class MetadataExceptionHandler {
         return new ErrorResponse(HttpStatus.CONFLICT, "Metadata-003", exception.getMessage());
     }
 
-    @ExceptionHandler(ExistsWorkedMetadataException.class)
+    @ExceptionHandler(RegIdIsNotWorkerException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleRegIdIsNotWorker(RegIdIsNotWorkerException exception) {
         return new ErrorResponse(HttpStatus.CONFLICT, "Metadata-004", exception.getMessage());
     }
 
-    @ExceptionHandler(ExistsWorkedMetadataException.class)
+    @ExceptionHandler(ArticleFileNotFoundException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleArticleFileNotFound(ArticleFileNotFoundException exception) {
         return new ErrorResponse(HttpStatus.CONFLICT, "Metadata-005", exception.getMessage());
