@@ -29,7 +29,7 @@ public class ImageExceptionHandler {
     }
 
     @ExceptionHandler(ImageNotFoundException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleImageNotFound(ImageNotFoundException exception) {
         return new ErrorResponse(HttpStatus.NOT_FOUND, "Image-003", exception.getMessage());
     }

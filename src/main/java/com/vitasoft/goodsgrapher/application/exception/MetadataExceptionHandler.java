@@ -42,8 +42,8 @@ public class MetadataExceptionHandler {
     }
 
     @ExceptionHandler(ArticleFileNotFoundException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleArticleFileNotFound(ArticleFileNotFoundException exception) {
-        return new ErrorResponse(HttpStatus.CONFLICT, "Metadata-005", exception.getMessage());
+        return new ErrorResponse(HttpStatus.NOT_FOUND, "Metadata-005", exception.getMessage());
     }
 }
