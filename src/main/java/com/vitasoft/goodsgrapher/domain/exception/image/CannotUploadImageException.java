@@ -1,4 +1,4 @@
-package com.vitasoft.goodsgrapher.domain.exception.metadata;
+package com.vitasoft.goodsgrapher.domain.exception.image;
 
 public class CannotUploadImageException extends RuntimeException {
     public CannotUploadImageException() {
