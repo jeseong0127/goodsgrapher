@@ -33,7 +33,7 @@ public class MemberService {
     }
 
     public List<GetAccountsDto> getAccounts(String memberId) {
-        return adjustmentRepository.findByRegId(memberId).stream()
+        return adjustmentRepository.findByAdjustId(memberId).stream()
                 .map(GetAccountsDto::new)
                 .collect(Collectors.toList());
     }
