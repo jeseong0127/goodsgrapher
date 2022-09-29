@@ -27,7 +27,7 @@ public class MemberService {
     private final ArticleFileRepository articleFileRepository;
 
     public List<GetMetadataDto> getMetadata(String memberId) {
-        return metadataRepository.findAllByReserveIdOrRegId(memberId, memberId).stream()
+        return metadataRepository.findAllByReserveIdOrRegIdOrderByReserveIdDesc(memberId, memberId).stream()
                 .map(metadata -> new GetMetadataDto(metadata, articleFileRepository.countByArticleIdAndRegIdAndIsDeleted(metadata.getMetaSeq(), metadata.getRegId(), "0")))
                 .collect(Collectors.toList());
     }
