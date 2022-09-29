@@ -4,6 +4,7 @@ import com.vitasoft.goodsgrapher.application.request.DeleteMetadataRequest;
 import com.vitasoft.goodsgrapher.application.request.MetadataRequest;
 import com.vitasoft.goodsgrapher.domain.exception.member.MemberNotFoundException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ArticleFileNotFoundException;
+import com.vitasoft.goodsgrapher.domain.exception.metadata.DuplicationReserveIdException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExceededReservedCountLimitException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExistsWorkedMetadataException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.MetadataNotFoundException;
@@ -86,15 +87,18 @@ public class MetadataService {
     }
 
     public void reserveMetadata(String memberId, int metaSeq) {
-        int reservedCount = metadataRepository.countByReserveId(memberId);
-
         if (adjustmentRepository.findByMetaSeqAndAdjustId(metaSeq, memberId).isPresent())
             throw new ExistsWorkedMetadataException();
 
+        int reservedCount = metadataRepository.countByReserveId(memberId);
         if (reservedCount >= 3)
             throw new ExceededReservedCountLimitException();
 
         Metadata metadata = metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq));
+
+        if (metadata.getReserveId().equals(memberId))
+            throw new DuplicationReserveIdException(metadata.getMetaSeq());
+
         metadata.setReserveId(memberId);
         metadata.setReserveDate(LocalDateTime.now());
         metadataRepository.save(metadata);

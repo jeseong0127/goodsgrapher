@@ -2,6 +2,7 @@ package com.vitasoft.goodsgrapher.application.exception;
 
 import com.vitasoft.goodsgrapher.core.response.ErrorResponse;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ArticleFileNotFoundException;
+import com.vitasoft.goodsgrapher.domain.exception.metadata.DuplicationReserveIdException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExceededReservedCountLimitException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExistsWorkedMetadataException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.MetadataNotFoundException;
@@ -45,5 +46,11 @@ public class MetadataExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleArticleFileNotFound(ArticleFileNotFoundException exception) {
         return new ErrorResponse(HttpStatus.NOT_FOUND, "Metadata-005", exception.getMessage());
+    }
+
+    @ExceptionHandler(DuplicationReserveIdException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleDuplicationReserveId(DuplicationReserveIdException exception) {
+        return new ErrorResponse(HttpStatus.CONFLICT, "Metadata-006", exception.getMessage());
     }
 }
