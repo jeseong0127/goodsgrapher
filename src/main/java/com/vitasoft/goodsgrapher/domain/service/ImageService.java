@@ -25,13 +25,16 @@ public class ImageService {
     @Value("${image.upload-path.metadata}")
     private String imagePath;
 
+    @Value("${image.upload-path.inspect}")
+    private String inspectPath;
+
     private final ArticleFileRepository articleFileRepository;
 
     public ArticleFile uploadMetadataImage(String memberId, Metadata metadata, MultipartFile file, int displayOrder) {
         try {
             UploadImageDto uploadImageDto = new UploadImageDto(file);
             String fileName = formatFileName(memberId, metadata, displayOrder, uploadImageDto.getFileType());
-            uploadImage(imagePath, uploadImageDto, fileName);
+            uploadImage(inspectPath, uploadImageDto, fileName);
             return new ArticleFile(metadata.getMetaSeq(), fileName.substring(fileName.indexOf("/") + 1), fileName, uploadImageDto.getFileSize(), uploadImageDto.getFileType(), memberId, displayOrder);
         } catch (IOException e) {
             throw new CannotUploadImageException();
@@ -67,6 +70,11 @@ public class ImageService {
     public byte[] viewImage(int imageId) {
         ArticleFile articleFile = articleFileRepository.findById(imageId).orElseThrow(() -> new ImageNotFoundException(imageId));
         return this.viewImage(imagePath + File.separator + articleFile.getFileName());
+    }
+
+    public byte[] viewInspectImage(int imageId) {
+        ArticleFile articleFile = articleFileRepository.findById(imageId).orElseThrow(() -> new ImageNotFoundException(imageId));
+        return this.viewImage(inspectPath + File.separator + articleFile.getFileName());
     }
 
     private byte[] viewImage(String fileName) {

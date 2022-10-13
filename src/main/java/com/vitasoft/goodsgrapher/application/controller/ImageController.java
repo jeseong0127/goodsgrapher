@@ -36,4 +36,13 @@ public class ImageController {
     ) {
         return imageService.viewThumbnailImage(imagePath);
     }
+
+    @ApiOperation(value = "검수 상세 이미지 조회하기")
+    @GetMapping(value = "/inspect/{imageId}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public byte[] viewInspectImage(
+            @PathVariable int imageId
+    ) {
+        return imageService.viewInspectImage(imageId);
+    }
 }

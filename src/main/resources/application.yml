@@ -47,6 +47,7 @@ app:
 image:
   upload-path:
     metadata: ${METADATA_UPLOAD_PATH}
+    inspect: ${INSPECT_UPLOAD_PATH}
 
 logging:
   level:
