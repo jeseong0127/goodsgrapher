@@ -36,6 +36,8 @@ public class Member {
 
     private String providerId;
 
+    private String subscription;
+
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 }
