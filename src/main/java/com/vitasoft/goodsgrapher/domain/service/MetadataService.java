@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -128,8 +129,9 @@ public class MetadataService {
 
         Metadata metadata = metadataRepository.findById(metadataRequest.getMetaSeq()).orElseThrow(() -> new MetadataNotFoundException(metadataRequest.getMetaSeq()));
 
-        for (int i = 0; i < metadataRequest.getImages().size(); i++) {
-            ArticleFile articleFile = imageService.uploadMetadataImage(memberId, metadata, metadataRequest.getImages().get(i), i);
+        int displayOrder = 0;
+        for (MultipartFile image : metadataRequest.getImages()) {
+            ArticleFile articleFile = imageService.uploadMetadataImage(memberId, metadata, image, displayOrder++);
             articleFileRepository.save(articleFile);
         }
 
@@ -139,6 +141,7 @@ public class MetadataService {
         metadata.setRegName(member.getMemberName());
         metadata.setRegDate(LocalDateTime.now());
         metadata.setImgCount(defaultImageCount);
+        metadata.setSubScription(member.getSubscription());
 
         metadataRepository.save(metadata);
     }
