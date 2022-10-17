@@ -41,16 +41,8 @@ public class ImageService {
         }
     }
 
-    private void uploadImage(String imagePath, UploadImageDto uploadImageDto, String fileName) throws IOException {
-        File directory = new File(imagePath, fileName.substring(0, fileName.indexOf("/")));
-        File image = new File(imagePath + File.separator + fileName);
-
-        FileUtils.forceMkdir(directory);
-        uploadImageDto.getFile().transferTo(image);
-    }
-
     private String formatFileName(String memberId, Metadata metadata, int displayOrder, String fileType) {
-        String formatMetaSeq = leadingZeros(String.valueOf(metadata.getMetaSeq()));
+        String formatMetaSeq = String.format("%06d", metadata.getMetaSeq());
 
         String[] folderNameParts = {memberId, metadata.getLastRightHolderName(), metadata.getArticleName(), metadata.getModelName(), metadata.getRegistrationNumber(), metadata.getDsshpclsscd()};
         String folderName = String.join("_", folderNameParts);
@@ -58,13 +50,12 @@ public class ImageService {
         return folderName + fileName;
     }
 
-    private String leadingZeros(String n) {
-        StringBuilder zero = new StringBuilder();
+    private void uploadImage(String imagePath, UploadImageDto uploadImageDto, String fileName) throws IOException {
+        File directory = new File(imagePath, fileName.substring(0, fileName.indexOf("/")));
+        File image = new File(imagePath + File.separator + fileName);
 
-        if (n.length() < 6) {
-            zero.append("0".repeat(6 - n.length()));
-        }
-        return zero + n;
+        FileUtils.forceMkdir(directory);
+        uploadImageDto.getFile().transferTo(image);
     }
 
     public byte[] viewImage(int imageId) {
