@@ -124,26 +124,35 @@ public class MetadataService {
 
     public void uploadMetadata(String memberId, MetadataRequest metadataRequest) {
         int defaultImageCount = 62;
+        int displayOrder = 0;
 
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(MemberNotFoundException::new);
 
         Metadata metadata = metadataRepository.findById(metadataRequest.getMetaSeq()).orElseThrow(() -> new MetadataNotFoundException(metadataRequest.getMetaSeq()));
 
-        int displayOrder = 0;
-        for (MultipartFile image : metadataRequest.getImages()) {
-            ArticleFile articleFile = imageService.uploadMetadataImage(memberId, metadata, image, displayOrder++);
-            articleFileRepository.save(articleFile);
+        if (!metadata.getReserveId().equals(defaultReserveId)) {
+            setMetadata(metadata, member, defaultImageCount);
+            metadataRepository.save(metadata);
+        } else {
+            displayOrder = articleFileRepository.findTopByArticleIdOrderByArticleFileIdDesc(metadataRequest.getMetaSeq()).getDisplayOrder() + 1;
         }
 
+        if (metadataRequest.getImages() != null) {
+            for (MultipartFile image : metadataRequest.getImages()) {
+                ArticleFile articleFile = imageService.uploadMetadataImage(memberId, metadata, image, displayOrder++);
+                articleFileRepository.save(articleFile);
+            }
+        }
+    }
+
+    private void setMetadata(Metadata metadata, Member member, int defaultImageCount) {
         metadata.setReserveId(defaultReserveId);
         metadata.setReserveDate(null);
-        metadata.setRegId(memberId);
+        metadata.setRegId(member.getMemberId());
         metadata.setRegName(member.getMemberName());
         metadata.setRegDate(LocalDateTime.now());
         metadata.setImgCount(defaultImageCount);
         metadata.setSubScription(member.getSubscription());
-
-        metadataRepository.save(metadata);
     }
 
     public void updateMetadata(String memberId, MetadataRequest metadataRequest) {
