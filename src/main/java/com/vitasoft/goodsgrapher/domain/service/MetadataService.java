@@ -171,8 +171,8 @@ public class MetadataService {
         metadataRepository.findByMetaSeqAndRegId(deleteMetadataRequest.getMetaSeq(), memberId)
                 .orElseThrow(RegIdIsNotWorkerException::new);
 
-        for (int i = 0; i < deleteMetadataRequest.getArticleFileId().size(); i++) {
-            ArticleFile articleFile = articleFileRepository.findById(deleteMetadataRequest.getArticleFileId().get(i))
+        for (int articleFileId : deleteMetadataRequest.getArticleFileId()) {
+            ArticleFile articleFile = articleFileRepository.findById(articleFileId)
                     .orElseThrow(ArticleFileNotFoundException::new);
             articleFile.setIsDeleted("1");
             articleFileRepository.save(articleFile);
