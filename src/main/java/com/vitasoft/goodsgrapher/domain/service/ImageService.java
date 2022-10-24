@@ -3,7 +3,6 @@ package com.vitasoft.goodsgrapher.domain.service;
 import com.vitasoft.goodsgrapher.domain.exception.image.CannotUploadImageException;
 import com.vitasoft.goodsgrapher.domain.exception.image.CannotViewImageException;
 import com.vitasoft.goodsgrapher.domain.exception.image.ImageNotFoundException;
-import com.vitasoft.goodsgrapher.domain.model.dto.UploadImageDto;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.ArticleFile;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.Metadata;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.ArticleFileRepository;
@@ -15,6 +14,7 @@ import java.io.IOException;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,10 +32,11 @@ public class ImageService {
 
     public ArticleFile uploadMetadataImage(String memberId, Metadata metadata, MultipartFile file, int displayOrder) {
         try {
-            UploadImageDto uploadImageDto = new UploadImageDto(file);
-            String fileName = formatFileName(memberId, metadata, displayOrder, uploadImageDto.getFileType());
-            uploadImage(inspectPath, uploadImageDto, fileName);
-            return new ArticleFile(metadata.getMetaSeq(), fileName.substring(fileName.indexOf("/") + 1), fileName, uploadImageDto.getFileSize(), uploadImageDto.getFileType(), memberId, displayOrder);
+            String fileType = "." + FilenameUtils.getExtension(file.getOriginalFilename());
+            String fileSize = String.valueOf(file.getSize());
+            String fileName = formatFileName(memberId, metadata, displayOrder, fileType);
+            uploadImage(inspectPath, file, fileName);
+            return new ArticleFile(metadata.getMetaSeq(), fileName.substring(fileName.indexOf("/") + 1), fileName, fileSize, fileType, memberId, displayOrder);
         } catch (IOException e) {
             throw new CannotUploadImageException();
         }
@@ -50,12 +51,12 @@ public class ImageService {
         return folderName + fileName;
     }
 
-    private void uploadImage(String imagePath, UploadImageDto uploadImageDto, String fileName) throws IOException {
+    private void uploadImage(String imagePath, MultipartFile file, String fileName) throws IOException {
         File directory = new File(imagePath, fileName.substring(0, fileName.indexOf("/")));
         File image = new File(imagePath + File.separator + fileName);
 
         FileUtils.forceMkdir(directory);
-        uploadImageDto.getFile().transferTo(image);
+        file.transferTo(image);
     }
 
     public byte[] viewImage(int imageId) {
