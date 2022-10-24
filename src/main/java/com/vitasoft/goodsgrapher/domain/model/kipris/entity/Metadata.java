@@ -1,5 +1,7 @@
 package com.vitasoft.goodsgrapher.domain.model.kipris.entity;
 
+import com.vitasoft.goodsgrapher.domain.model.sso.entity.Member;
+
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,4 +66,14 @@ public class Metadata {
 
     @Column(name = "DSSHPCLSSCD")
     private String dsshpclsscd;
+
+    public void startWork(Member member, String defaultReserveId, int defaultImageCount) {
+        this.setReserveId(defaultReserveId);
+        this.setReserveDate(null);
+        this.setRegId(member.getMemberId());
+        this.setRegName(member.getMemberName());
+        this.setRegDate(LocalDateTime.now());
+        this.setImgCount(defaultImageCount);
+        this.setSubScription(member.getSubscription());
+    }
 }

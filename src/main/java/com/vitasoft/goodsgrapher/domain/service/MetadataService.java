@@ -130,29 +130,23 @@ public class MetadataService {
 
         Metadata metadata = metadataRepository.findById(metadataRequest.getMetaSeq()).orElseThrow(() -> new MetadataNotFoundException(metadataRequest.getMetaSeq()));
 
-        if (!metadata.getReserveId().equals(defaultReserveId)) {
-            setMetadata(metadata, member, defaultImageCount);
-            metadataRepository.save(metadata);
-        } else {
+        if (metadata.getReserveId().equals(defaultReserveId)) {
             displayOrder = articleFileRepository.findTopByArticleIdOrderByArticleFileIdDesc(metadataRequest.getMetaSeq()).getDisplayOrder() + 1;
+        } else {
+            metadata.startWork(member, defaultReserveId, defaultImageCount);
+            metadataRepository.save(metadata);
         }
 
+        uploadMetadataImages(metadataRequest, metadata, memberId, displayOrder);
+    }
+
+    private void uploadMetadataImages(MetadataRequest metadataRequest, Metadata metadata, String memberId, int displayOrder) {
         if (metadataRequest.getImages() != null) {
             for (MultipartFile image : metadataRequest.getImages()) {
                 ArticleFile articleFile = imageService.uploadMetadataImage(memberId, metadata, image, displayOrder++);
                 articleFileRepository.save(articleFile);
             }
         }
-    }
-
-    private void setMetadata(Metadata metadata, Member member, int defaultImageCount) {
-        metadata.setReserveId(defaultReserveId);
-        metadata.setReserveDate(null);
-        metadata.setRegId(member.getMemberId());
-        metadata.setRegName(member.getMemberName());
-        metadata.setRegDate(LocalDateTime.now());
-        metadata.setImgCount(defaultImageCount);
-        metadata.setSubScription(member.getSubscription());
     }
 
     public void updateMetadata(String memberId, MetadataRequest metadataRequest) {
