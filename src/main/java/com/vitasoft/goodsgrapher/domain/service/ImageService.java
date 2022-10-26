@@ -45,14 +45,14 @@ public class ImageService {
     private String formatFileName(String memberId, Metadata metadata, int displayOrder, String fileType) {
         String formatMetaSeq = String.format("%06d", metadata.getMetaSeq());
 
-        String[] folderNameParts = {memberId, metadata.getLastRightHolderName(), metadata.getArticleName(), metadata.getModelName(), metadata.getRegistrationNumber(), metadata.getDsshpclsscd()};
-        String folderName = String.join("_", folderNameParts);
+        String[] folderNameParts = {memberId, metadata.getLastRightHolderName(), metadata.getArticleName(), metadata.getModelName(), metadata.getRegistrationNumber().replaceAll("/", ""), metadata.getDsshpclsscd()};
+        String folderName = metadata.getDsshpclsscd() + "/" + String.join("_", folderNameParts);
         String fileName = "/VS_2022_" + formatMetaSeq + "_0_-1_" + (displayOrder + 1) + fileType;
         return folderName + fileName;
     }
 
     private void uploadImage(String imagePath, MultipartFile file, String fileName) throws IOException {
-        File directory = new File(imagePath, fileName.substring(0, fileName.indexOf("/")));
+        File directory = new File(imagePath + File.separator + fileName.substring(0, fileName.lastIndexOf("/")));
         File image = new File(imagePath + File.separator + fileName);
 
         FileUtils.forceMkdir(directory);
