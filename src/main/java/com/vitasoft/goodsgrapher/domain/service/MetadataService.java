@@ -77,14 +77,11 @@ public class MetadataService {
 
     public void cancelExcessReserveTime() {
         LocalDateTime now = LocalDateTime.now();
-
-        List<Metadata> reservedMetadataList = metadataRepository.findAllByReserveDateNotNull();
-
-        for (Metadata reservedMetadata : reservedMetadataList) {
-            if (ChronoUnit.SECONDS.between(now, reservedMetadata.getReserveDate()) > 10800) {
-                cancelReserveMetadata(reservedMetadata.getMetaSeq());
-            }
-        }
+        metadataRepository.findAllByReserveDateNotNull().stream()
+                .filter(reservedMetadata -> now.isAfter(reservedMetadata.getReserveDate().plusHours(3)))
+                .forEach(reservedMetadata -> {
+                    cancelReserveMetadata(reservedMetadata.getMetaSeq());
+                });
     }
 
     public void reserveMetadata(String memberId, int metaSeq) {
