@@ -10,19 +10,23 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
+    @Transactional(readOnly = true)
     public List<GetArticleDto> getNotices() {
         return articleRepository.findAllByBoardNameAndIsDeletedOrderByArticleIdDesc(BoardName.NOTICE, 'N').stream()
                 .map(GetArticleDto::new)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public GetNoticeDto getLatestNotice() {
         return new GetNoticeDto(articleRepository.findTopByBoardNameAndIsDeletedOrderByArticleIdDesc(BoardName.NOTICE, 'N'));
     }

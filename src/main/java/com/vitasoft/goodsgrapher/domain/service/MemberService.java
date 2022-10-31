@@ -15,9 +15,11 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
 
     private final MetadataRepository metadataRepository;
@@ -26,18 +28,21 @@ public class MemberService {
 
     private final ArticleFileRepository articleFileRepository;
 
+    @Transactional(readOnly = true)
     public List<GetMetadataDto> getMetadata(String memberId) {
         return metadataRepository.findAllByReserveIdOrRegIdOrderByReserveIdDesc(memberId, memberId).stream()
                 .map(metadata -> new GetMetadataDto(metadata, articleFileRepository.countByArticleIdAndRegIdAndIsDeleted(metadata.getMetaSeq(), metadata.getRegId(), "0")))
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<GetAccountsDto> getAccounts(String memberId) {
         return adjustmentRepository.findByAdjustId(memberId).stream()
                 .map(GetAccountsDto::new)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public AccountDetailResponse getAccountDetail(int metaSeq, String memberId) {
         Metadata metadata = metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq));
 
