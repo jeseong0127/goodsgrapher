@@ -27,10 +27,12 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MetadataService {
 
     private final ImageService imageService;
@@ -112,10 +114,12 @@ public class MetadataService {
         metadataRepository.save(metadata);
     }
 
+    @Transactional(readOnly = true)
     public GetMetadataDto getMetadataDetail(int metaSeq, String memberId) {
         return new GetMetadataDto(metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq)), articleFileRepository.countByArticleIdAndRegIdAndIsDeleted(metaSeq, memberId, "0"));
     }
 
+    @Transactional(readOnly = true)
     public List<GetArticleFileDto> getMetadataImages(int metaSeq, String memberId) {
         return articleFileRepository.findAllByBoardNameAndArticleIdAndIsDeletedAndRegId("METAIMG", metaSeq, "0", memberId).stream()
                 .map(GetArticleFileDto::new)
