@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,7 +20,8 @@ public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
 
     Optional<Metadata> findByMetaSeqAndRegId(int metaSeq, String memberId);
 
-    List<Metadata> findAllByArticleNameContainingOrModelNameContainingOrCompanyNameContainingAndReserveIdAndRegIdNullAndImgCountLessThan(String articleName, String modelName, String CompanyName, String reserveId, int imgCount);
+    @Query("select m from Metadata m where m.reserveId = 'N/A' and m.regId is null and m.imgCount < 62 and (m.articleName like :articleName or m.modelName like :modelName or m.companyName Like :companyName)")
+    List<Metadata> findAllByMetadata(@Param("articleName") String articleName, @Param("modelName") String modelName, @Param("companyName") String companyName);
 
     Optional<Metadata> findByPathImgContainingAndReserveIdAndRegIdNullAndImgCountLessThan(String pathImg, String reserveId, int imgCount);
 
