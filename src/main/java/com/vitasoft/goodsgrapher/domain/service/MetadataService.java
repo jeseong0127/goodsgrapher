@@ -174,6 +174,7 @@ public class MetadataService {
                     .orElseThrow(ArticleFileNotFoundException::new);
             articleFile.setIsDeleted("1");
             articleFileRepository.save(articleFile);
+            imageService.deleteMetadataImage(articleFile);
         }
     }
 }
