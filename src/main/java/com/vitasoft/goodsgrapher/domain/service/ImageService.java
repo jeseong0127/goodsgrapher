@@ -89,4 +89,10 @@ public class ImageService {
     public byte[] viewThumbnailImage(String imagePath) {
         return this.viewImage(this.imagePath + imagePath);
     }
+
+    public void deleteMetadataImage(ArticleFile articleFileId) {
+        File file = new File(inspectPath + File.separator + articleFileId.getFileName());
+        if (file.exists())
+            file.delete();
+    }
 }
