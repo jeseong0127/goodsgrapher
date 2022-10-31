@@ -58,7 +58,7 @@ public class MetadataService {
     public List<GetMetadataDto> getSearchMetadata(String data) {
         cancelExcessReserveTime();
 
-        return metadataRepository.findAllByArticleNameContainingOrModelNameContainingOrCompanyNameContainingAndReserveIdAndRegIdNullAndImgCountLessThan(data, data, data, defaultReserveId, 62).stream()
+        return metadataRepository.findAllByMetadata("%" + data + "%", "%" + data + "%", "%" + data + "%").stream()
                 .map(GetMetadataDto::new)
                 .collect(Collectors.toList());
     }
