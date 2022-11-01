@@ -38,7 +38,7 @@ public class ImageService {
             String fileSize = String.valueOf(file.getSize());
             String fileName = formatFileName(memberId, metadata, displayOrder, fileType);
             uploadImage(inspectPath, file, fileName);
-            return new ArticleFile(metadata.getMetaSeq(), fileName.substring(fileName.indexOf("/") + 1), fileName, fileSize, fileType, memberId, displayOrder);
+            return new ArticleFile(metadata.getMetaSeq(), fileName.substring(fileName.lastIndexOf("/") + 1), fileName, fileSize, fileType, memberId, displayOrder);
         } catch (IOException e) {
             throw new CannotUploadImageException();
         }
@@ -59,6 +59,14 @@ public class ImageService {
 
         FileUtils.forceMkdir(directory);
         file.transferTo(image);
+        updateFilePermission(directory);
+        updateFilePermission(image);
+    }
+
+    private void updateFilePermission(File file) {
+        file.setExecutable(true);
+        file.setReadable(true);
+        file.setWritable(true);
     }
 
     public byte[] viewImage(int imageId) {
