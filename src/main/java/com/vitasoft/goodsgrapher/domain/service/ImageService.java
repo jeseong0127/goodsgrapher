@@ -59,13 +59,14 @@ public class ImageService {
 
         FileUtils.forceMkdir(directory);
         file.transferTo(image);
-        setFilePermission(image);
+        updateFilePermission(directory);
+        updateFilePermission(image);
     }
 
-    private void setFilePermission(File file) {
+    private void updateFilePermission(File file) {
         file.setExecutable(true);
         file.setReadable(true);
-        file.setReadable(true);
+        file.setWritable(true);
     }
 
     public byte[] viewImage(int imageId) {
