@@ -38,6 +38,8 @@ public class Member {
 
     private String subscription;
 
+    private char useYn;
+
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 }
