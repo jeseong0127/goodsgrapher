@@ -90,8 +90,8 @@ public class MetadataService {
     }
 
     public void reserveMetadata(String memberId, int metaSeq) {
-        if (adjustmentRepository.findByMetaSeqAndAdjustId(metaSeq, memberId).isPresent())
-            throw new ExistsWorkedMetadataException();
+//        if (adjustmentRepository.findByMetaSeqAndAdjustId(metaSeq, memberId).isPresent())
+//            throw new ExistsWorkedMetadataException();
 
         int reservedCount = metadataRepository.countByReserveId(memberId);
         if (reservedCount >= 3)
@@ -137,7 +137,7 @@ public class MetadataService {
         if (metadata.getReserveId().equals(defaultReserveId)) {
             displayOrder = articleFileRepository.findTopByArticleIdOrderByArticleFileIdDesc(metadataRequest.getMetaSeq()).getDisplayOrder() + 1;
         } else {
-            metadata.startWork(member, defaultReserveId, defaultImageCount);
+            metadata.startWork(member, defaultReserveId, defaultImageCount + metadata.getImgCount());
             metadataRepository.save(metadata);
         }
 
