@@ -20,12 +20,12 @@ public interface MetadataRepository extends JpaRepository<Metadata, Integer> {
 
     Optional<Metadata> findByMetaSeqAndRegId(int metaSeq, String memberId);
 
-    @Query("select m from Metadata m where m.reserveId = 'N/A' and m.regId is null and m.imgCount < 62 and (m.articleName like :articleName or m.modelName like :modelName or m.companyName Like :companyName)")
+    @Query("select m from Metadata m where m.modelName is not null and m.reserveId = 'N/A' and m.regId is null and m.imgCount < 62 and (m.articleName like :articleName or m.modelName like :modelName or m.companyName Like :companyName)")
     List<Metadata> findAllByMetadata(@Param("articleName") String articleName, @Param("modelName") String modelName, @Param("companyName") String companyName);
 
-    Optional<Metadata> findByPathImgContainingAndReserveIdAndRegIdNullAndImgCountLessThan(String pathImg, String reserveId, int imgCount);
+    Optional<Metadata> findByModelNameIsNotNullAndPathImgContainingAndReserveIdAndRegIdNullAndImgCountLessThan(String pathImg, String reserveId, int imgCount);
 
-    Optional<Metadata> findByPathImgGoodsContainingAndReserveIdAndRegIdNullAndImgCountLessThan(String pathImgGoods, String reserveId, int imgCount);
+    Optional<Metadata> findByModelNameIsNotNullAndPathImgGoodsContainingAndReserveIdAndRegIdNullAndImgCountLessThan(String pathImgGoods, String reserveId, int imgCount);
 
     List<Metadata> findAllByReserveDateNotNull();
 }

@@ -68,10 +68,10 @@ public class MetadataService {
         List<GetMetadataDto> getMetadataDtos = new ArrayList<>();
 
         for (String RegistrationNumber : data) {
-            metadataRepository.findByPathImgContainingAndReserveIdAndRegIdNullAndImgCountLessThan(RegistrationNumber, defaultReserveId, 62)
+            metadataRepository.findByModelNameIsNotNullAndPathImgContainingAndReserveIdAndRegIdNullAndImgCountLessThan(RegistrationNumber, defaultReserveId, 62)
                     .ifPresent(metadata -> getMetadataDtos.add(new GetMetadataDto(metadata, "photo")));
 
-            metadataRepository.findByPathImgGoodsContainingAndReserveIdAndRegIdNullAndImgCountLessThan(RegistrationNumber, defaultReserveId, 62)
+            metadataRepository.findByModelNameIsNotNullAndPathImgGoodsContainingAndReserveIdAndRegIdNullAndImgCountLessThan(RegistrationNumber, defaultReserveId, 62)
                     .ifPresent(metadata -> getMetadataDtos.add(new GetMetadataDto(metadata, "drawing")));
         }
         return getMetadataDtos;
