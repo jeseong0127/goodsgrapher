@@ -47,7 +47,7 @@ public class ImageService {
     private String formatFileName(String memberId, Metadata metadata, int displayOrder, String fileType) {
         String formatMetaSeq = String.format("%06d", metadata.getMetaSeq());
 
-        String[] folderNameParts = {memberId, metadata.getLastRightHolderName(), metadata.getArticleName(), metadata.getModelName(), metadata.getRegistrationNumber().replaceAll("/", ""), metadata.getDsshpclsscd()};
+        String[] folderNameParts = {memberId, metadata.getLastRightHolderName(), metadata.getArticleName(), metadata.getModelName(), metadata.getRegistrationNumber().replaceAll("/", ""), metadata.getDsshpclsscd().contains("|") ? metadata.getDsshpclsscd().split("\\|")[0] : metadata.getDsshpclsscd()};
         String folderName = metadata.getDsshpclsscd().contains("|") ? metadata.getDsshpclsscd().split("\\|")[0] + "/" + String.join("_", folderNameParts) : metadata.getDsshpclsscd() + "/" + String.join("_", folderNameParts);
         String fileName = "/VS_2022_" + formatMetaSeq + "_0_-1_" + (displayOrder + 1) + fileType;
         return folderName + fileName;
