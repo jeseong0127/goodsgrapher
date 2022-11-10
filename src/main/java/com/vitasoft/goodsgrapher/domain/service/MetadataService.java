@@ -6,19 +6,18 @@ import com.vitasoft.goodsgrapher.domain.exception.member.MemberNotFoundException
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ArticleFileNotFoundException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.DuplicationReserveIdException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.ExceededReservedCountLimitException;
-import com.vitasoft.goodsgrapher.domain.exception.metadata.ExistsWorkedMetadataException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.MetadataNotFoundException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.RegIdIsNotWorkerException;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetArticleFileDto;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetMetadataDto;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.ArticleFile;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.Metadata;
-import com.vitasoft.goodsgrapher.domain.model.kipris.repository.AdjustmentRepository;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.ArticleFileRepository;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.MetadataRepository;
 import com.vitasoft.goodsgrapher.domain.model.sso.entity.Member;
 import com.vitasoft.goodsgrapher.domain.model.sso.repository.MemberRepository;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -41,11 +40,13 @@ public class MetadataService {
 
     private final MetadataRepository metadataRepository;
 
-    private final AdjustmentRepository adjustmentRepository;
+//    private final AdjustmentRepository adjustmentRepository;
 
     private final MemberRepository memberRepository;
 
     String defaultReserveId = "N/A";
+
+    int defaultImageCount = 62;
 
     public List<GetMetadataDto> getMetadataList() {
         cancelExcessReserveTime();
@@ -127,7 +128,6 @@ public class MetadataService {
     }
 
     public void uploadMetadata(String memberId, MetadataRequest metadataRequest) {
-        int defaultImageCount = 62;
         int displayOrder = 0;
 
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(MemberNotFoundException::new);
@@ -165,7 +165,7 @@ public class MetadataService {
         }
     }
 
-    public void deleteMetadata(String memberId, DeleteMetadataRequest deleteMetadataRequest) {
+    public void deleteMetadata(String memberId, DeleteMetadataRequest deleteMetadataRequest) throws IOException {
         metadataRepository.findByMetaSeqAndRegId(deleteMetadataRequest.getMetaSeq(), memberId)
                 .orElseThrow(RegIdIsNotWorkerException::new);
 
@@ -174,7 +174,21 @@ public class MetadataService {
                     .orElseThrow(ArticleFileNotFoundException::new);
             articleFile.setIsDeleted("1");
             articleFileRepository.save(articleFile);
-            imageService.deleteMetadataImage(articleFile);
+            imageService.deleteMetadataImage(articleFile.getFileName());
+        }
+    }
+
+    public void deleteWorkedMetadata(int metaSeq, String memberId) throws IOException {
+        Metadata metadata = metadataRepository.findById(metaSeq).orElseThrow(() -> new MetadataNotFoundException(metaSeq));
+
+        List<ArticleFile> articleFiles = articleFileRepository.findByArticleIdAndRegIdAndIsDeletedAndEtc2IsNull(metaSeq, memberId, "0");
+        articleFiles.forEach(articleFile -> articleFile.setIsDeleted("1"));
+        articleFileRepository.saveAll(articleFiles);
+
+        metadata.deleteMetadata();
+
+        for (ArticleFile articleFile : articleFiles) {
+            imageService.deleteMetadataImage(articleFile.getFileName());
         }
     }
 }
