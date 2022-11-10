@@ -10,6 +10,7 @@ import com.vitasoft.goodsgrapher.core.security.MemberInfo;
 import com.vitasoft.goodsgrapher.domain.service.MetadataService;
 import io.swagger.annotations.ApiOperation;
 
+import java.io.IOException;
 import java.util.List;
 import javax.validation.Valid;
 
@@ -77,6 +78,16 @@ public class MetadataController {
         return new MetadataDetailResponse(metadataService.getMetadataDetail(metaSeq, member.getMemberId()));
     }
 
+    @ApiOperation("메타데이터 작업 삭제하기")
+    @DeleteMapping("/{metaSeq}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteWorkedMetadata(
+            @MemberInfo AuthenticatedMember member,
+            @PathVariable int metaSeq
+    ) throws IOException {
+        metadataService.deleteWorkedMetadata(metaSeq, member.getMemberId());
+    }
+
     @ApiOperation("작업한 메타데이터 이미지보기")
     @GetMapping("/{metaSeq}/images")
     @ResponseStatus(HttpStatus.OK)
@@ -113,7 +124,7 @@ public class MetadataController {
     public void deleteMetadata(
             @MemberInfo AuthenticatedMember member,
             @Valid @ModelAttribute DeleteMetadataRequest deleteMetadataRequest
-    ) {
+    ) throws IOException {
         metadataService.deleteMetadata(member.getMemberId(), deleteMetadataRequest);
     }
 }

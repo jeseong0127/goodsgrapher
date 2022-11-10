@@ -51,6 +51,8 @@ public class Metadata {
     @Column(name = "RESERV_DATE")
     private LocalDateTime reserveDate;
 
+    private String inspectorId;
+
     private String regId;
 
     private String regName;
@@ -75,5 +77,14 @@ public class Metadata {
         this.setRegDate(LocalDateTime.now());
         this.setImgCount(defaultImageCount);
         this.setSubScription(member.getSubscription());
+    }
+
+    public void deleteMetadata() {
+        this.setRegId(null);
+        this.setRegName(null);
+        this.setRegDate(null);
+        this.setInspectorId(null);
+        this.setSubScription(null);
+        this.setImgCount(this.getImgCount() - 62);
     }
 }

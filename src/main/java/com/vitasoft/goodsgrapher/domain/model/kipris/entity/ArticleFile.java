@@ -49,6 +49,8 @@ public class ArticleFile {
 
     private String etc = "metaFile";
 
+    private String etc2;
+
     public ArticleFile(int metaSeq, String displayName, String fileName, String fileSize, String fileType, String memberId, int displayOrder) {
         this.articleId = metaSeq;
         this.displayOrder = displayOrder;

@@ -98,9 +98,8 @@ public class ImageService {
         return this.viewImage(this.imagePath + imagePath);
     }
 
-    public void deleteMetadataImage(ArticleFile articleFileId) {
-        File file = new File(inspectPath + File.separator + articleFileId.getFileName());
-        if (file.exists())
-            file.delete();
+    public void deleteMetadataImage(String filename) throws IOException {
+        File file = new File(inspectPath + File.separator + filename);
+        FileUtils.forceDelete(file);
     }
 }
