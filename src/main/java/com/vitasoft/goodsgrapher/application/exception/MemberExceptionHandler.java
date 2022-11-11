@@ -2,8 +2,8 @@ package com.vitasoft.goodsgrapher.application.exception;
 
 import com.vitasoft.goodsgrapher.core.response.ErrorResponse;
 import com.vitasoft.goodsgrapher.domain.exception.member.MemberNotFoundException;
-import com.vitasoft.goodsgrapher.domain.exception.member.NotMatchPasswordException;
 import com.vitasoft.goodsgrapher.domain.exception.member.MemberNotUseException;
+import com.vitasoft.goodsgrapher.domain.exception.member.NotMatchPasswordException;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -28,8 +28,8 @@ public class MemberExceptionHandler {
     }
 
     @ExceptionHandler(MemberNotUseException.class)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ErrorResponse handleNotNotUseMember(MemberNotUseException exception) {
-        return new ErrorResponse(HttpStatus.NO_CONTENT, "Member-003", exception.getMessage());
+        return new ErrorResponse(HttpStatus.FORBIDDEN, "Member-003", exception.getMessage());
     }
 }
