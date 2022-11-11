@@ -7,8 +7,8 @@ import com.vitasoft.goodsgrapher.application.response.TokenResponse;
 import com.vitasoft.goodsgrapher.core.security.JwtTokenProvider;
 import com.vitasoft.goodsgrapher.core.util.Encoder;
 import com.vitasoft.goodsgrapher.domain.exception.member.MemberNotFoundException;
-import com.vitasoft.goodsgrapher.domain.exception.member.NotMatchPasswordException;
 import com.vitasoft.goodsgrapher.domain.exception.member.MemberNotUseException;
+import com.vitasoft.goodsgrapher.domain.exception.member.NotMatchPasswordException;
 import com.vitasoft.goodsgrapher.domain.model.sso.entity.Member;
 import com.vitasoft.goodsgrapher.domain.model.sso.repository.MemberRepository;
 
@@ -31,7 +31,7 @@ public class AuthService {
         Member member = memberRepository.findByMemberId(loginRequest.getMemberId()).orElseThrow(MemberNotFoundException::new);
 
         if (member.getUseYn() == 'N')
-            throw new MemberNotUseException(member.getMemberId());
+            throw new MemberNotUseException();
 
         if (!encoder.encrypt("SHA-256", loginRequest.getMemberPw()).equals(member.getMemberPw()))
             throw new NotMatchPasswordException();
