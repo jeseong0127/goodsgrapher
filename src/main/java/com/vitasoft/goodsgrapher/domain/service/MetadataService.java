@@ -40,13 +40,11 @@ public class MetadataService {
 
     private final MetadataRepository metadataRepository;
 
-//    private final AdjustmentRepository adjustmentRepository;
-
     private final MemberRepository memberRepository;
 
-    String defaultReserveId = "N/A";
+    private final String defaultReserveId = "N/A";
 
-    int defaultImageCount = 62;
+    private static final int defaultImageCount = 62;
 
     public List<GetMetadataDto> getMetadataList() {
         cancelExcessReserveTime();
@@ -56,26 +54,28 @@ public class MetadataService {
                 .collect(Collectors.toList());
     }
 
-    public List<GetMetadataDto> getSearchMetadata(String data) {
+    public List<GetMetadataDto> getSearchMetadata(String searchWord) {
         cancelExcessReserveTime();
-
-        return metadataRepository.findAllByMetadata("%" + data + "%", "%" + data + "%", "%" + data + "%").stream()
+        return metadataRepository.findAllByMetadata(searchWord, searchWord, searchWord).stream()
                 .map(GetMetadataDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<GetMetadataDto> getImageSearchMetadata(List<String> data) {
+    public List<GetMetadataDto> getImageSearchMetadata(List<String> registrationNumbers) {
         cancelExcessReserveTime();
-        List<GetMetadataDto> getMetadataDtos = new ArrayList<>();
+        List<GetMetadataDto> metadataDtos = new ArrayList<>();
 
-        for (String RegistrationNumber : data) {
-            metadataRepository.findByModelNameIsNotNullAndPathImgContainingAndReserveIdAndRegIdNullAndImgCountLessThan(RegistrationNumber, defaultReserveId, 62)
-                    .ifPresent(metadata -> getMetadataDtos.add(new GetMetadataDto(metadata, "photo")));
-
-            metadataRepository.findByModelNameIsNotNullAndPathImgGoodsContainingAndReserveIdAndRegIdNullAndImgCountLessThan(RegistrationNumber, defaultReserveId, 62)
-                    .ifPresent(metadata -> getMetadataDtos.add(new GetMetadataDto(metadata, "drawing")));
+        for (String registrationNumber : registrationNumbers) {
+            metadataRepository.findAllByModelNameIsNotNullAndReserveIdAndRegIdNullAndImgCountLessThanAndUseYn(defaultReserveId, 62, 'Y')
+                    .forEach(metadata -> {
+                        if (metadata.getPathImgGoods() != null && metadata.getPathImgGoods().contains(registrationNumber)) {
+                            metadataDtos.add(new GetMetadataDto(metadata, "photo"));
+                        } else if (metadata.getPathImg() != null && metadata.getPathImg().contains(registrationNumber)) {
+                            metadataDtos.add(new GetMetadataDto(metadata, "drawing"));
+                        }
+                    });
         }
-        return getMetadataDtos;
+        return metadataDtos;
     }
 
     public void cancelExcessReserveTime() {
@@ -91,9 +91,6 @@ public class MetadataService {
     }
 
     public void reserveMetadata(String memberId, int metaSeq) {
-//        if (adjustmentRepository.findByMetaSeqAndAdjustId(metaSeq, memberId).isPresent())
-//            throw new ExistsWorkedMetadataException();
-
         int reservedCount = metadataRepository.countByReserveId(memberId);
         if (reservedCount >= 3)
             throw new ExceededReservedCountLimitException();
