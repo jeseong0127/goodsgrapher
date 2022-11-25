@@ -58,9 +58,9 @@ public class MetadataService {
                 .collect(Collectors.toList());
     }
 
-    public List<GetMetadataDto> getSearchMetadata(String searchWord) {
+    public List<GetMetadataDto> getSearchMetadata(String searchWord, String codeId) {
         cancelExcessReserveTime();
-        return metadataRepository.findAllByMetadata(searchWord, searchWord, searchWord).stream()
+        return metadataRepository.findAllByMetadata(codeId, searchWord, searchWord, searchWord).stream()
                 .map(GetMetadataDto::new)
                 .collect(Collectors.toList());
     }
@@ -200,6 +200,7 @@ public class MetadataService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<GetCategoryDto> getDownCategory(String codeId) {
         return codeRepository.findAllByHighCodeId(codeId).stream()
                 .map(GetCategoryDto::new)

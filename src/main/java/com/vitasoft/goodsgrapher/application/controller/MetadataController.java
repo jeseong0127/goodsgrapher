@@ -38,11 +38,12 @@ public class MetadataController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public MetadataResponse getMetadata(
-            @RequestParam(required = false) String word,
-            @RequestParam(required = false) List<String> images
+            @RequestParam(required = false, defaultValue = "") String word,
+            @RequestParam(required = false) List<String> images,
+            @RequestParam(required = false) String codeId
     ) {
-        if (word != null) {
-            return new MetadataResponse(metadataService.getSearchMetadata(word));
+        if (word != null || codeId != null) {
+            return new MetadataResponse(metadataService.getSearchMetadata(word, codeId));
         } else if (images != null) {
             return new MetadataResponse(metadataService.getImageSearchMetadata(images));
         } else {
