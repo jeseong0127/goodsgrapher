@@ -9,10 +9,12 @@ import com.vitasoft.goodsgrapher.domain.exception.metadata.ExceededReservedCount
 import com.vitasoft.goodsgrapher.domain.exception.metadata.MetadataNotFoundException;
 import com.vitasoft.goodsgrapher.domain.exception.metadata.RegIdIsNotWorkerException;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetArticleFileDto;
+import com.vitasoft.goodsgrapher.domain.model.dto.GetCategoryDto;
 import com.vitasoft.goodsgrapher.domain.model.dto.GetMetadataDto;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.ArticleFile;
 import com.vitasoft.goodsgrapher.domain.model.kipris.entity.Metadata;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.ArticleFileRepository;
+import com.vitasoft.goodsgrapher.domain.model.kipris.repository.CodeRepository;
 import com.vitasoft.goodsgrapher.domain.model.kipris.repository.MetadataRepository;
 import com.vitasoft.goodsgrapher.domain.model.sso.entity.Member;
 import com.vitasoft.goodsgrapher.domain.model.sso.repository.MemberRepository;
@@ -41,6 +43,8 @@ public class MetadataService {
     private final MetadataRepository metadataRepository;
 
     private final MemberRepository memberRepository;
+
+    private final CodeRepository codeRepository;
 
     private final String defaultReserveId = "N/A";
 
@@ -187,5 +191,18 @@ public class MetadataService {
         for (ArticleFile articleFile : articleFiles) {
             imageService.deleteMetadataImage(articleFile.getFileName());
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<GetCategoryDto> getHighCategory() {
+        return codeRepository.findAllByHighCodeIdAndCodeGroup("TOPCODE", "GOODS").stream()
+                .map(GetCategoryDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<GetCategoryDto> getDownCategory(String codeId) {
+        return codeRepository.findAllByHighCodeId(codeId).stream()
+                .map(GetCategoryDto::new)
+                .collect(Collectors.toList());
     }
 }

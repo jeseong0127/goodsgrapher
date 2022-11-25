@@ -3,6 +3,7 @@ package com.vitasoft.goodsgrapher.application.controller;
 import com.vitasoft.goodsgrapher.application.request.DeleteMetadataRequest;
 import com.vitasoft.goodsgrapher.application.request.MetadataRequest;
 import com.vitasoft.goodsgrapher.application.response.ArticleFileResponse;
+import com.vitasoft.goodsgrapher.application.response.CategoryResponse;
 import com.vitasoft.goodsgrapher.application.response.MetadataDetailResponse;
 import com.vitasoft.goodsgrapher.application.response.MetadataResponse;
 import com.vitasoft.goodsgrapher.core.security.AuthenticatedMember;
@@ -126,5 +127,22 @@ public class MetadataController {
             @Valid @ModelAttribute DeleteMetadataRequest deleteMetadataRequest
     ) throws IOException {
         metadataService.deleteMetadata(member.getMemberId(), deleteMetadataRequest);
+    }
+
+    @ApiOperation("상위 카테고리 가져오기")
+    @GetMapping("/high-category")
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryResponse getHighCategory(
+    ) {
+        return new CategoryResponse(metadataService.getHighCategory());
+    }
+
+    @ApiOperation("하위 카테고리 가져오기")
+    @GetMapping("/high-category/{codeId}")
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryResponse getDownCategory(
+            @PathVariable String codeId
+    ) {
+        return new CategoryResponse(metadataService.getDownCategory(codeId));
     }
 }
