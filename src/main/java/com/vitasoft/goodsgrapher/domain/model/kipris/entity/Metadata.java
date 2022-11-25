@@ -26,7 +26,11 @@ public class Metadata {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int metaSeq;
 
+    private String highCodeId;
+
     private String productCategory;
+
+    private String codeId;
 
     private String articleName;
 
@@ -80,11 +84,11 @@ public class Metadata {
     }
 
     public void deleteMetadata() {
-        this.setRegId(null);
-        this.setRegName(null);
-        this.setRegDate(null);
+        regId = null;
+        regName = null;
+        regDate = null;
         this.setInspectorId(null);
         this.setSubScription(null);
-        this.setImgCount(this.getImgCount() - 62);
+        imgCount -= 62;
     }
 }
