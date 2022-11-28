@@ -38,7 +38,7 @@ public class MetadataController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public MetadataResponse getMetadata(
-            @RequestParam(required = false, defaultValue = "") String word,
+            @RequestParam(required = false) String word,
             @RequestParam(required = false) List<String> images,
             @RequestParam(required = false) String codeId
     ) {
