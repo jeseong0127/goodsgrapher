@@ -60,7 +60,8 @@ public class MetadataService {
 
     public List<GetMetadataDto> getSearchMetadata(String searchWord, String codeId) {
         cancelExcessReserveTime();
-        return metadataRepository.findAllByMetadata(codeId, searchWord, searchWord, searchWord).stream()
+
+        return metadataRepository.findAllByMetadata(codeId, searchWord == null ? "" : searchWord, searchWord, searchWord).stream()
                 .map(GetMetadataDto::new)
                 .collect(Collectors.toList());
     }
