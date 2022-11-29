@@ -66,19 +66,20 @@ public class MetadataService {
                 .collect(Collectors.toList());
     }
 
-    public List<GetMetadataDto> getImageSearchMetadata(List<String> registrationNumbers) {
+    public List<GetMetadataDto> getImageSearchMetadata(List<String> images) {
         cancelExcessReserveTime();
         List<GetMetadataDto> metadataDtos = new ArrayList<>();
 
-        for (String registrationNumber : registrationNumbers) {
-            metadataRepository.findAllByModelNameIsNotNullAndReserveIdAndRegIdNullAndImgCountLessThanAndUseYn(defaultReserveId, 62, 'Y')
-                    .forEach(metadata -> {
-                        if (metadata.getPathImgGoods() != null && metadata.getPathImgGoods().contains(registrationNumber)) {
-                            metadataDtos.add(new GetMetadataDto(metadata, "photo"));
-                        } else if (metadata.getPathImg() != null && metadata.getPathImg().contains(registrationNumber)) {
-                            metadataDtos.add(new GetMetadataDto(metadata, "drawing"));
-                        }
-                    });
+        List<Metadata> metadataList = metadataRepository.findAllByModelNameIsNotNullAndReserveIdAndRegIdNullAndImgCountLessThanAndUseYn(defaultReserveId, 62, 'Y');
+
+        for (String pathImage : images) {
+            metadataList.forEach(metadata -> {
+                if (metadata.getPathImgGoods() != null && metadata.getPathImgGoods().contains(pathImage)) {
+                    metadataDtos.add(new GetMetadataDto(metadata, "photo"));
+                } else if (metadata.getPathImg() != null && metadata.getPathImg().contains(pathImage)) {
+                    metadataDtos.add(new GetMetadataDto(metadata, "drawing"));
+                }
+            });
         }
         return metadataDtos;
     }
