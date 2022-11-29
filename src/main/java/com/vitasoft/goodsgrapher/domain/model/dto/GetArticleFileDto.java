@@ -20,7 +20,7 @@ public class GetArticleFileDto {
     private final String isDeleted;
     private final String regId;
     private final LocalDateTime regDate;
-    private final String inspectPF;
+    private final char inspectPF;
     private final String etc;
 
     public GetArticleFileDto(ArticleFile articleFile) {
