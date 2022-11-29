@@ -30,6 +30,9 @@ public class ImageService {
     @Value("${image.upload-path.inspect}")
     private String inspectPath;
 
+    @Value("${image.upload-path.fail}")
+    private String failPath;
+
     private final ArticleFileRepository articleFileRepository;
 
     public ArticleFile uploadMetadataImage(String memberId, Metadata metadata, MultipartFile file, int displayOrder) {
@@ -59,29 +62,21 @@ public class ImageService {
 
         FileUtils.forceMkdir(directory);
         file.transferTo(image);
-        updateFilePermission(directory);
-        updateFilePermission(image);
-    }
-
-    private void updateFilePermission(File file) {
-        file.setExecutable(true);
-        file.setReadable(true);
-        file.setWritable(true);
     }
 
     public byte[] viewImage(int imageId) {
         ArticleFile articleFile = articleFileRepository.findById(imageId).orElseThrow(() -> new ImageNotFoundException(imageId));
-        return this.viewImage(imagePath + File.separator + articleFile.getFileName());
+        return this.viewImage(new File(imagePath, articleFile.getFileName()));
     }
 
     public byte[] viewInspectImage(int imageId) {
         ArticleFile articleFile = articleFileRepository.findById(imageId).orElseThrow(() -> new ImageNotFoundException(imageId));
-        return this.viewImage(inspectPath + File.separator + articleFile.getFileName());
+        return this.viewImage(new File((articleFile.getInspectPf() == 'P' ? inspectPath : failPath), articleFile.getFileName()));
     }
 
-    private byte[] viewImage(String fileName) {
+    private byte[] viewImage(File image) {
         try (
-                FileInputStream inputStream = new FileInputStream(fileName);
+                FileInputStream inputStream = new FileInputStream(image);
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         ) {
             byte[] buffer = new byte[8192];
@@ -90,12 +85,12 @@ public class ImageService {
                 outputStream.write(buffer, 0, length);
             return outputStream.toByteArray();
         } catch (IOException e) {
-            throw new CannotViewImageException(fileName);
+            throw new CannotViewImageException(image);
         }
     }
 
     public byte[] viewThumbnailImage(String imagePath) {
-        return this.viewImage(this.imagePath + imagePath);
+        return this.viewImage(new File(this.imagePath, imagePath));
     }
 
     public void deleteMetadataImage(String filename) throws IOException {

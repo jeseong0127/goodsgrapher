@@ -45,7 +45,7 @@ public class ArticleFile {
 
     private LocalDateTime regDate;
 
-    private String inspectPf = "N";
+    private char inspectPf = 'N';
 
     private String etc = "metaFile";
 
