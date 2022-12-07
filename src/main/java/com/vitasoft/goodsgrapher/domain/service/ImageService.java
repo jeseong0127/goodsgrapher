@@ -50,10 +50,28 @@ public class ImageService {
     private String formatFileName(String memberId, Metadata metadata, int displayOrder, String fileType) {
         String formatMetaSeq = String.format("%06d", metadata.getMetaSeq());
 
-        String[] folderNameParts = {memberId, metadata.getLastRightHolderName(), metadata.getArticleName(), metadata.getModelName(), metadata.getRegistrationNumber().replaceAll("/", ""), metadata.getDsshpclsscd().contains("|") ? metadata.getDsshpclsscd().split("\\|")[0] : metadata.getDsshpclsscd()};
+        String[] folderNameParts = {memberId, formatLastRightHolderName(metadata.getLastRightHolderName()), metadata.getArticleName(), metadata.getModelName(), metadata.getRegistrationNumber().replaceAll("/", ""), metadata.getDsshpclsscd().contains("|") ? metadata.getDsshpclsscd().split("\\|")[0] : metadata.getDsshpclsscd()};
         String folderName = metadata.getDsshpclsscd().contains("|") ? metadata.getDsshpclsscd().split("\\|")[0] + "/" + String.join("_", folderNameParts) : metadata.getDsshpclsscd() + "/" + String.join("_", folderNameParts);
         String fileName = "/VS_2022_" + formatMetaSeq + "_0_-1_" + (displayOrder + 1) + fileType;
         return folderName + fileName;
+    }
+
+    private String formatLastRightHolderName(String lastRightHolderName) {
+        String[] brandNameList = {"애드크런치", "세라젬", "다이슨", "에이치피", "라네즈", "엘지전자", "현대모비스", "미쟝센", "슈피겐", "설화수", "삼성전자", "쓰리쎄븐"};
+        String[] brandCodeList = {"ACR", "CRG", "DY", "HP", "LA", "LG", "MOB", "MSC", "SG", "SH", "SS", "TS"};
+
+        int index = 0;
+        String brandCode = "ZZ";
+
+        for (String brandName : brandNameList) {
+            if (lastRightHolderName.contains(brandName)) {
+                brandCode = brandCodeList[index];
+                break;
+            }
+            index++;
+        }
+
+        return brandCode;
     }
 
     private void uploadImage(String imagePath, MultipartFile file, String fileName) throws IOException {
