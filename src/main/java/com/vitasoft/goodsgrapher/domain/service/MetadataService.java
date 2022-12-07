@@ -90,7 +90,7 @@ public class MetadataService {
         List<Metadata> reservedMetadataList = metadataRepository.findAllByReserveDateNotNull();
 
         for (Metadata reservedMetadata : reservedMetadataList) {
-            if (ChronoUnit.SECONDS.between(now, reservedMetadata.getReserveDate()) > 172800) {
+            if (ChronoUnit.SECONDS.between(reservedMetadata.getReserveDate(), now) > 172800) {
                 cancelReserveMetadata(reservedMetadata.getMetaSeq());
             }
         }
