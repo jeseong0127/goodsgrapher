@@ -89,7 +89,7 @@ public class ImageService {
 
     public byte[] viewInspectImage(int imageId) {
         ArticleFile articleFile = articleFileRepository.findById(imageId).orElseThrow(() -> new ImageNotFoundException(imageId));
-        return this.viewImage(new File((articleFile.getInspectPf() == 'P' ? inspectPath : failPath), articleFile.getFileName()));
+        return this.viewImage(new File((articleFile.getInspectPf() == 'F' ? failPath : inspectPath), articleFile.getFileName()));
     }
 
     private byte[] viewImage(File image) {
