@@ -22,7 +22,7 @@ spring:
   servlet:
     multipart:
       max-file-size: 30MB
-      max-request-size: 30MB
+      max-request-size: 80MB
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -51,6 +51,7 @@ image:
   upload-path:
     metadata: ${METADATA_UPLOAD_PATH}
     inspect: ${INSPECT_UPLOAD_PATH}
+    fail: ${FAIL_UPLOAD_PATH}
 
 logging:
   level:
