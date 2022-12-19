@@ -22,7 +22,7 @@ public class GetMetadataDto {
     private final LocalDateTime reserveDate;
     private final String regId;
     private final LocalDateTime regDate;
-    private final int imgCount;
+    private int imgCount;
 
     public GetMetadataDto(Metadata metadata) {
         this.metaSeq = metadata.getMetaSeq();
@@ -42,37 +42,12 @@ public class GetMetadataDto {
     }
 
     public GetMetadataDto(Metadata metadata, String type) {
+        this(metadata);
         this.type = type;
-        this.metaSeq = metadata.getMetaSeq();
-        this.productCategory = metadata.getProductCategory();
-        this.articleName = metadata.getArticleName();
-        this.modelName = metadata.getModelName();
-        this.companyName = metadata.getCompanyName();
-        this.registrationNumber = metadata.getRegistrationNumber();
-        this.applicationNumber = metadata.getApplicationNumber();
-        this.lastRightHolderName = metadata.getLastRightHolderName();
-        this.pathImg = metadata.getPathImg();
-        this.reserveId = metadata.getReserveId();
-        this.reserveDate = metadata.getReserveDate();
-        this.regId = metadata.getRegId();
-        this.regDate = metadata.getRegDate();
-        this.imgCount = metadata.getImgCount();
     }
 
     public GetMetadataDto(Metadata metadata, int count) {
-        this.metaSeq = metadata.getMetaSeq();
-        this.productCategory = metadata.getProductCategory();
-        this.articleName = metadata.getArticleName();
-        this.modelName = metadata.getModelName();
-        this.companyName = metadata.getCompanyName();
-        this.registrationNumber = metadata.getRegistrationNumber();
-        this.applicationNumber = metadata.getApplicationNumber();
-        this.lastRightHolderName = metadata.getLastRightHolderName();
-        this.pathImg = metadata.getPathImg();
-        this.reserveId = metadata.getReserveId();
-        this.reserveDate = metadata.getReserveDate();
-        this.regId = metadata.getRegId();
-        this.regDate = metadata.getRegDate();
+        this(metadata);
         this.imgCount = count;
     }
 }
